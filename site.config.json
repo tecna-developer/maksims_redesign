@@ -3,7 +3,7 @@
   "defaultLang": "et",
   "langs": ["et", "ru", "en"],
 
-  "_formEndpoint": "REQUIRED before go-live. Paste the POST URL of your form service (e.g. https://formspree.io/f/xxxxxxx or https://api.web3forms.com/submit), or the path to your own handler (e.g. /send.php). While this is empty the build prints a warning and the form falls back to a mailto: link so no enquiry is silently lost.",
+  "_formEndpoint": "REQUIRED before go-live. Formspree: create a form at formspree.io whose recipient is info@maksims.ee, then paste its endpoint here — it looks like https://formspree.io/f/xxxxxxxx. Set company.formProvider to \"Formspree\" at the same time. The form markup already suits Formspree: the field named `email` becomes the Reply-To, `_subject` sets the subject line, and app.js sends Accept: application/json so the visitor stays on the page. Nothing else needs changing. While this is empty the build warns and the form falls back to mailto: so no enquiry is silently lost.",
   "formEndpoint": "",
 
   "company": {

@@ -233,6 +233,9 @@
               <label for="f-website">Website</label>
               <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off" />
             </div>
+            <!-- Formspree reads the field named `email` for the Reply-To header, so
+                 replying to the notification reaches the sender directly. -->
+            <input type="hidden" name="_subject" value="{{form_title}} — {{company.displayName}}" />
             <input type="hidden" name="_started" id="fStarted" value="" />
             <input type="hidden" name="_lang" value="{{lang}}" />
 

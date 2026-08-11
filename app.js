@@ -215,17 +215,31 @@
     e.preventDefault();
     setBusy(true);
 
+    // Accept: application/json makes Formspree answer with JSON instead of
+    // redirecting to its own thank-you page.
     fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } })
       .then(function (res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json().catch(function () { return {}; }).then(function (json) {
+          if (!res.ok) {
+            // Formspree reports problems as { errors: [ { message, field } ] }.
+            var detail = json && json.errors && json.errors.length
+              ? json.errors.map(function (e) { return e.message; }).join(' ')
+              : '';
+            throw new Error(detail || 'HTTP ' + res.status);
+          }
+          return json;
+        });
+      })
+      .then(function () {
         setStatus('ok', MSG.okTitle, MSG.okBody);
         form.reset();
         if (started) started.value = String(Date.now());
       })
-      .catch(function () {
-        // Never claim success we can't verify — the visitor gets the real
-        // outcome and a way to reach us regardless.
-        setStatus('error', MSG.errTitle, MSG.errBody);
+      .catch(function (err) {
+        // Never claim success we can't verify. Show the service's own reason
+        // when it gave one, and always leave a way to reach us.
+        var why = err && err.message && !/^HTTP /.test(err.message) ? err.message : '';
+        setStatus('error', MSG.errTitle, why ? why + ' ' + MSG.errBody : MSG.errBody);
       })
       .then(function () { setBusy(false); });
   });
