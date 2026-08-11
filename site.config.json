@@ -27,10 +27,9 @@
     "opens": "09:00",
     "closes": "17:00",
 
-    "_regCode": "Fill in the Estonian registry code (registrikood). Left empty, the footer and JSON-LD simply omit it.",
-    "regCode": "",
-    "_vatNumber": "Fill in the VAT number (KMKR number), same behaviour.",
-    "vatNumber": ""
+    "_source": "regCode and vatNumber per the Estonian e-Business Register (ariregister.rik.ee/est/company/10038498), registered name Osaühing Maksims. Leaving either empty makes the footer, contact card and JSON-LD omit it.",
+    "regCode": "10038498",
+    "vatNumber": "EE100263873"
   },
 
   "privacyUpdated": "2026-08-11"
