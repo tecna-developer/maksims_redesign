@@ -1,0 +1,41 @@
+{{> header}}
+
+<main id="main">
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="eyebrow">{{page_eyebrow}}</div>
+      <h1>{{page_title}}</h1>
+      <p>{{page_intro}}</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="news-list" style="max-width:820px;">
+        <div class="news-row">
+          <time datetime="2022-11-18">18.11.2022</time>
+          <h3>{{news1_title}}</h3>
+        </div>
+        <div class="news-row">
+          <time datetime="2020-03-21">21.03.2020</time>
+          <h3>{{news2_title}}</h3>
+        </div>
+        <div class="news-row">
+          <time datetime="2017-12-27">27.12.2017</time>
+          <h3>{{news3_title}}</h3>
+        </div>
+        <div class="news-row">
+          <time datetime="2013-09-02">02.09.2013</time>
+          <h3>{{news4_title}}</h3>
+        </div>
+      </div>
+      <p class="news-note" style="margin-top:24px;">{{news_note}}</p>
+    </div>
+  </section>
+
+  {{> contact-band}}
+
+</main>
+
+{{> footer}}

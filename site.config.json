@@ -1,0 +1,37 @@
+{
+  "siteUrl": "https://www.maksims.ee",
+  "defaultLang": "et",
+  "langs": ["et", "ru", "en"],
+
+  "_formEndpoint": "REQUIRED before go-live. Paste the POST URL of your form service (e.g. https://formspree.io/f/xxxxxxx or https://api.web3forms.com/submit), or the path to your own handler (e.g. /send.php). While this is empty the build prints a warning and the form falls back to a mailto: link so no enquiry is silently lost.",
+  "formEndpoint": "",
+
+  "company": {
+    "legalName": "OÜ Maksims",
+    "displayName": "Maksims OÜ",
+    "email": "info@maksims.ee",
+    "cvEmail": "cv@maksims.ee",
+    "phone": "+372 6 270 750",
+    "phoneHref": "+3726270750",
+    "mobile": "+372 5 150 491",
+    "mobileHref": "+3725150491",
+    "whatsapp": "3725150491",
+    "street": "Kentmanni 18-45",
+    "postalCode": "10116",
+    "city": "Tallinn",
+    "region": "Harjumaa",
+    "country": "EE",
+    "latitude": "59.4297",
+    "longitude": "24.7536",
+    "founded": "1993",
+    "opens": "09:00",
+    "closes": "17:00",
+
+    "_regCode": "Fill in the Estonian registry code (registrikood). Left empty, the footer and JSON-LD simply omit it.",
+    "regCode": "",
+    "_vatNumber": "Fill in the VAT number (KMKR number), same behaviour.",
+    "vatNumber": ""
+  },
+
+  "privacyUpdated": "2026-08-11"
+}

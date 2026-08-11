@@ -1,0 +1,38 @@
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{meta_title}}</title>
+<meta name="description" content="{{meta_description}}" />
+<link rel="canonical" href="{{canonical}}" />
+{{{hreflang}}}
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="{{company.displayName}}" />
+<meta property="og:locale" content="{{ogLocale}}" />
+{{{ogLocaleAlt}}}
+<meta property="og:title" content="{{meta_title}}" />
+<meta property="og:description" content="{{meta_description}}" />
+<meta property="og:url" content="{{canonical}}" />
+{{{ogImage}}}
+
+<link rel="icon" href="{{asset}}favicon.svg" type="image/svg+xml" />
+{{{appleIcon}}}
+<meta name="theme-color" content="#F8F6EF" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#1B1712" media="(prefers-color-scheme: dark)" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- Only the five weights the stylesheet actually uses: Cormorant 400/600,
+     DM Sans 400/600, DM Mono 400/500. -->
+<link rel="preload" as="style"
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@400;600&family=DM+Mono:wght@400;500&display=swap" />
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@400;600&family=DM+Mono:wght@400;500&display=swap"
+  media="print" onload="this.media='all'" />
+<noscript>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=DM+Sans:wght@400;600&family=DM+Mono:wght@400;500&display=swap" />
+</noscript>
+
+<link rel="stylesheet" href="{{asset}}styles.css" />
+<script src="{{asset}}app.js" defer></script>
+{{{jsonLd}}}

@@ -1,0 +1,12 @@
+# Build output — regenerate with `node build.mjs`
+dist/
+
+# Vendored Claude Code skills library (tooling, not project code)
+.claude/skills/
+
+# Local editor preferences
+.vscode/
+
+# OS noise
+Thumbs.db
+.DS_Store

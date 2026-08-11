@@ -1,0 +1,251 @@
+{{> header}}
+
+<main id="main">
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="eyebrow">{{page_eyebrow}}</div>
+      <h1>{{page_title}}</h1>
+      <p>{{page_intro}}</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+
+      <div class="contact-lead">
+        <p>
+          <strong>{{lead_call_title}}</strong>
+          {{lead_call_body}}
+        </p>
+        <a class="btn btn-primary" href="tel:{{company.phoneHref}}">{{company.phone}}</a>
+        <a class="btn btn-ghost" href="mailto:{{company.email}}">{{company.email}}</a>
+      </div>
+
+      <div class="contact-grid">
+        <div>
+          <div class="contact-card">
+            <h3>{{card_address_head}}</h3>
+            <p>{{company.street}},<br>{{company.postalCode}} {{addr_city}},<br>{{addr_country}}</p>
+            <a class="map-link"
+              href="https://www.google.com/maps/search/?api=1&amp;query=Kentmanni+18-45%2C+10116+Tallinn%2C+Estonia"
+              target="_blank" rel="noopener">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:inline;">
+                <path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              {{card_map_link}}
+            </a>
+            <!-- Click-to-load: no request reaches Google until the visitor asks for it,
+                 which is what the privacy policy promises. -->
+            <div class="contact-map" id="mapHolder" hidden>
+              <iframe title="{{map_title}}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                data-src="https://www.google.com/maps?q=Kentmanni+18-45,+10116+Tallinn,+Estonia&amp;output=embed"></iframe>
+            </div>
+            <p style="margin-top:12px;">
+              <button type="button" class="btn btn-ghost" id="mapLoad" style="font-size:13.5px;padding:9px 16px;min-height:38px;">
+                {{map_title}}
+              </button>
+            </p>
+          </div>
+
+          <div class="contact-card">
+            <h3>{{card_phone_head}}</h3>
+            <p><a href="tel:{{company.phoneHref}}">{{company.phone}}</a></p>
+            <p><a href="tel:{{company.mobileHref}}">{{company.mobile}}</a><br><span>{{card_viber_note}}</span></p>
+          </div>
+
+          <div class="contact-card">
+            <h3>{{card_email_head}}</h3>
+            <p><a href="mailto:{{company.email}}">{{company.email}}</a></p>
+            <p class="contact-note">{{response_time}}</p>
+          </div>
+
+          <div class="contact-card">
+            <h3>{{card_hours_head}}</h3>
+            <dl>
+              <dt>{{hours_weekdays}}</dt>
+              <dd>{{company.opens}}–{{company.closes}}</dd>
+              <dt>{{hours_weekend}}</dt>
+              <dd>{{hours_closed}}</dd>
+            </dl>
+            <p class="contact-note">{{hours_note}}</p>
+          </div>
+
+          <div class="contact-card">
+            <h3>{{card_langs_head}}</h3>
+            <p>{{card_langs_body}}</p>
+          </div>
+
+          {{{requisitesCard}}}
+        </div>
+
+        <div id="quote" class="form-panel">
+          <div class="section-eyebrow">{{form_eyebrow}}</div>
+          <h2 class="section-title" style="margin-bottom:10px;">{{form_title}}</h2>
+          <p class="section-lede" style="margin-bottom:28px;">{{form_intro}}</p>
+
+          <!-- Announced to assistive tech the moment JS writes into it. -->
+          <div class="form-status" id="formStatus" role="status" aria-live="polite" tabindex="-1"></div>
+
+          <form class="quote-form" id="quoteForm" method="post" action="{{formAction}}"
+            data-mode="{{formMode}}" data-email="{{company.email}}" data-subject="{{form_title}}"
+            data-msg-required="{{err_required}}" data-msg-email="{{err_email}}"
+            data-msg-consent="{{err_consent}}" data-msg-summary="{{form_error_summary}}"
+            data-msg-ok-title="{{form_success_title}}" data-msg-ok-body="{{form_success_body}}"
+            data-msg-err-title="{{form_error_title}}" data-msg-err-body="{{form_error_body}}"
+            novalidate>
+
+            <fieldset class="form-section">
+              <legend>{{form_section_contact}}</legend>
+
+              <div class="form-row form-row--2">
+                <div class="field">
+                  <label for="f-contact">{{f_contact}} <span class="req" aria-hidden="true">*</span></label>
+                  <input type="text" id="f-contact" name="contact_person" autocomplete="name" required
+                    aria-describedby="e-contact" />
+                  <p class="field-error" id="e-contact"></p>
+                </div>
+                <div class="field">
+                  <label for="f-company">{{f_company}} <span class="req" aria-hidden="true">*</span></label>
+                  <input type="text" id="f-company" name="company_name" autocomplete="organization" required
+                    aria-describedby="e-company" />
+                  <p class="field-error" id="e-company"></p>
+                </div>
+              </div>
+
+              <div class="form-row form-row--2">
+                <div class="field">
+                  <label for="f-email">{{f_email}} <span class="req" aria-hidden="true">*</span></label>
+                  <input type="email" id="f-email" name="email" autocomplete="email" inputmode="email" required
+                    aria-describedby="e-email" />
+                  <p class="field-error" id="e-email"></p>
+                </div>
+                <div class="field">
+                  <label for="f-phone">{{f_phone}}</label>
+                  <input type="tel" id="f-phone" name="phone" autocomplete="tel" inputmode="tel" />
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-section">
+              <legend>{{form_section_volume}} <span style="text-transform:none;letter-spacing:0;font-weight:400;opacity:.75;">— {{form_optional}}</span></legend>
+              <p class="form-section-note">{{form_section_volume_note}}</p>
+
+              <fieldset class="field-group">
+                <legend>{{f_legal_form}}</legend>
+                <div class="field-radio-group">
+                  <label class="field-radio"><input type="radio" name="legal_form" value="AS" /> AS</label>
+                  <label class="field-radio"><input type="radio" name="legal_form" value="OÜ" checked /> OÜ</label>
+                  <label class="field-radio"><input type="radio" name="legal_form" value="KÜ" /> KÜ</label>
+                  <label class="field-radio"><input type="radio" name="legal_form" value="Muu" /> {{f_other}}</label>
+                </div>
+              </fieldset>
+
+              <div class="field">
+                <label for="f-activity">{{f_activity}}</label>
+                <input type="text" id="f-activity" name="main_activity" />
+              </div>
+
+              <div class="form-row form-row--3">
+                <div class="field">
+                  <label for="f-sales">{{f_sales}}</label>
+                  <input type="number" min="0" step="1" inputmode="numeric" id="f-sales" name="sales_invoices" />
+                </div>
+                <div class="field">
+                  <label for="f-cash">{{f_cash}}</label>
+                  <input type="number" min="0" step="1" inputmode="numeric" id="f-cash" name="cash_invoices" />
+                </div>
+                <div class="field">
+                  <label for="f-purchase">{{f_purchase}}</label>
+                  <input type="number" min="0" step="1" inputmode="numeric" id="f-purchase" name="purchase_invoices" />
+                </div>
+              </div>
+
+              <div class="form-row form-row--3">
+                <div class="field">
+                  <label for="f-receipts">{{f_receipts}}</label>
+                  <input type="number" min="0" step="1" inputmode="numeric" id="f-receipts" name="purchase_receipts" />
+                </div>
+                <div class="field">
+                  <label for="f-staff">{{f_staff}}</label>
+                  <input type="number" min="0" step="1" inputmode="numeric" id="f-staff" name="staff_count" />
+                </div>
+                <div class="field">
+                  <label for="f-startdate">{{f_startdate}}</label>
+                  <input type="date" id="f-startdate" name="start_date" data-min="today" />
+                </div>
+              </div>
+
+              <div class="form-row form-row--2">
+                <fieldset class="field-group">
+                  <legend>{{f_stock}}</legend>
+                  <div class="field-radio-group">
+                    <label class="field-radio"><input type="radio" name="stock_accounting" value="yes" /> {{f_yes}}</label>
+                    <label class="field-radio"><input type="radio" name="stock_accounting" value="no" checked /> {{f_no}}</label>
+                  </div>
+                </fieldset>
+                <fieldset class="field-group">
+                  <legend>{{f_fixed_assets}}</legend>
+                  <div class="field-radio-group">
+                    <label class="field-radio"><input type="radio" name="fixed_assets" value="yes" /> {{f_yes}}</label>
+                    <label class="field-radio"><input type="radio" name="fixed_assets" value="no" checked /> {{f_no}}</label>
+                  </div>
+                </fieldset>
+              </div>
+
+              <fieldset class="field-group">
+                <legend>{{f_status}}</legend>
+                <div class="field-radio-group">
+                  <label class="field-radio"><input type="radio" name="company_status" value="starting" checked /> {{f_status_starting}}</label>
+                  <label class="field-radio"><input type="radio" name="company_status" value="operating" /> {{f_status_operating}}</label>
+                  <label class="field-radio"><input type="radio" name="company_status" value="inactive" /> {{f_status_inactive}}</label>
+                </div>
+              </fieldset>
+
+              <fieldset class="field-group">
+                <legend>{{f_access}}</legend>
+                <div class="field-radio-group">
+                  <label class="field-radio"><input type="radio" name="access_24h" value="yes" /> {{f_yes}}</label>
+                  <label class="field-radio"><input type="radio" name="access_24h" value="no" checked /> {{f_no}}</label>
+                </div>
+              </fieldset>
+
+              <div class="field">
+                <label for="f-extra">{{f_extra}}</label>
+                <textarea id="f-extra" name="additional_info" rows="4"></textarea>
+              </div>
+            </fieldset>
+
+            <div class="field">
+              <label class="field-consent" for="f-consent">
+                <input type="checkbox" id="f-consent" name="consent" value="yes" required
+                  aria-describedby="e-consent" />
+                <span>{{{f_consent}}}</span>
+              </label>
+              <p class="field-error" id="e-consent"></p>
+            </div>
+
+            <p class="form-note">{{form_required_note}}</p>
+
+            <div class="hp-field" aria-hidden="true">
+              <label for="f-website">Website</label>
+              <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off" />
+            </div>
+            <input type="hidden" name="_started" id="fStarted" value="" />
+            <input type="hidden" name="_lang" value="{{lang}}" />
+
+            <div>
+              <button type="submit" class="btn btn-primary" id="quoteSubmit"
+                data-label="{{form_submit}}" data-label-sending="{{form_sending}}">{{form_submit}}</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+{{> footer}}

@@ -1,0 +1,53 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <a class="brand" href="{{url_index}}" aria-label="{{aria_logo_home}}">
+            <img class="logo" src="{{asset}}logo-maksims-light.svg" alt="{{company.displayName}}" width="264"
+              height="86" />
+            <!-- Parked: see common._archive.tagline.
+            <span class="brand-tag">{{tagline}}</span>
+            -->
+          </a>
+        </div>
+        <p data-footer-tagline style="max-width:32ch;">{{footer_tagline}}</p>
+      </div>
+      <div>
+        <h4>{{footer_nav_head}}</h4>
+        <ul class="footer-links">
+          <li><a href="{{url_ettevottest}}">{{nav_about}}</a></li>
+          <li><a href="{{url_teenused}}">{{nav_services}}</a></li>
+          <li><a href="{{url_uudised}}">{{nav_news}}</a></li>
+          <li><a href="{{url_kontakt}}">{{nav_contact}}</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>{{footer_who_head}}</h4>
+        <ul class="footer-links">
+          <li><a href="{{url_index}}#audiences">{{aud1_title}}</a></li>
+          <li><a href="{{url_index}}#audiences">{{aud2_title}}</a></li>
+          <li><a href="{{url_index}}#audiences">{{aud3_title}}</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>{{footer_contact_head}}</h4>
+        <ul class="footer-links">
+          <li><span>{{footer_address}}</span></li>
+          <li><a href="tel:{{company.phoneHref}}">{{company.phone}}</a></li>
+          <li><a href="tel:{{company.mobileHref}}">{{company.mobile}} (Viber/WhatsApp/Telegram)</a></li>
+          <li><a href="mailto:{{company.email}}">{{company.email}}</a></li>
+        </ul>
+        <h4 style="margin-top:22px;">{{footer_legal_head}}</h4>
+        <ul class="footer-links">
+          <li><a href="{{url_privaatsus}}">{{privacy_link}}</a></li>
+          {{{footerRequisites}}}
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>{{footer_copy}}</span>
+      {{{langSwitch}}}
+    </div>
+  </div>
+</footer>

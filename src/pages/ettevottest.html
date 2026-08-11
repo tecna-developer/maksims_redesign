@@ -1,0 +1,98 @@
+{{> header}}
+
+<main id="main">
+
+  <section class="page-hero">
+    <div class="container">
+      <div class="eyebrow">{{page_eyebrow}}</div>
+      <h1>{{page_title}}</h1>
+      <p>{{page_intro}}</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="about-grid">
+        <div>
+          <div class="about-body">
+            <p>{{about_p1}}</p>
+            <p>{{about_p2}}</p>
+            <p>{{about_p3}}</p>
+            <p>{{about_p4}}</p>
+          </div>
+        </div>
+        <div class="quote-card">
+          <span class="quote-mark" aria-hidden="true">&rdquo;</span>
+          <p>{{about_quote}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">{{why_eyebrow}}</div>
+        <h2 class="section-title">{{why_title}}</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-cell">
+          <div class="why-mark" aria-hidden="true"></div>
+          <div>
+            <h4>{{why1_title}}</h4>
+            <p>{{why1_body}}</p>
+          </div>
+        </div>
+        <div class="why-cell">
+          <div class="why-mark" aria-hidden="true"></div>
+          <div>
+            <h4>{{why2_title}}</h4>
+            <p>{{why2_body}}</p>
+          </div>
+        </div>
+        <div class="why-cell">
+          <div class="why-mark" aria-hidden="true"></div>
+          <div>
+            <h4>{{why3_title}}</h4>
+            <p>{{why3_body}}</p>
+          </div>
+        </div>
+        <div class="why-cell">
+          <div class="why-mark" aria-hidden="true"></div>
+          <div>
+            <h4>{{why4_title}}</h4>
+            <p>{{why4_body}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="surface-alt">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">{{people_eyebrow}}</div>
+        <h2 class="section-title">{{people_title}}</h2>
+      </div>
+      <div class="people-grid">
+        <div class="people-card">
+          <h3>{{career_title}}</h3>
+          <p>{{career_p1}}</p>
+          <p>{{career_p2}}</p>
+          <a class="btn btn-ghost" href="mailto:{{company.cvEmail}}">{{career_cta}}</a>
+        </div>
+        <div class="people-card">
+          <h3>{{training_title}}</h3>
+          <p>{{training_p1}}</p>
+          <p>{{training_p2}}</p>
+          <a class="btn btn-ghost" href="mailto:{{company.cvEmail}}">{{training_cta}}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{> contact-band}}
+
+</main>
+
+{{> footer}}
