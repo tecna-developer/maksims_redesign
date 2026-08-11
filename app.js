@@ -83,8 +83,17 @@
 
   var statusBox = $('#formStatus');
   var submitBtn = $('#quoteSubmit');
+  var demoNotice = $('#formDemoNotice');
   var started = $('#fStarted');
   if (started) started.value = String(Date.now());
+
+  // Portfolio mode keeps the form interactive without allowing any submission.
+  if (form.getAttribute('data-mode') === 'demo' && submitBtn && demoNotice) {
+    submitBtn.addEventListener('click', function () {
+      demoNotice.focus();
+      demoNotice.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+  }
 
   // Don't offer a start date in the past.
   var startDate = $('[data-min="today"]', form);
@@ -188,6 +197,12 @@
   }
 
   form.addEventListener('submit', function (e) {
+    if (form.getAttribute('data-mode') === 'demo') {
+      e.preventDefault();
+      if (demoNotice) demoNotice.focus();
+      return;
+    }
+
     var bad = validate();
     if (bad.length) {
       e.preventDefault();

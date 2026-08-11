@@ -22,6 +22,7 @@ const OUT = path.join(ROOT, 'dist');
 
 const config = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
 const { siteUrl, defaultLang, langs, company } = config;
+const portfolioMode = Boolean(config.portfolioMode);
 
 // id -> output filename. The Estonian slugs are kept in every language so the
 // live Estonian URLs keep working and no redirect map is needed.
@@ -212,7 +213,7 @@ let written = 0;
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 
-if (!config.formEndpoint)
+if (!config.formEndpoint && !portfolioMode)
   warnings.push(
     'site.config.json -> formEndpoint is empty.\n' +
     '    The quote form falls back to opening the visitor\'s mail client (mailto:) so no\n' +
@@ -237,6 +238,7 @@ for (const page of PAGES) {
       siteUrl,
       company,
       privacyUpdated: config.privacyUpdated,
+      portfolioMode,
       canonical: `${siteUrl}/${pathFor(lang, page.file)}`,
       ogLocale: OG_LOCALE[lang],
       ogLocaleAlt: langs.filter(l => l !== lang)
@@ -260,9 +262,19 @@ for (const page of PAGES) {
       privacyUrl: asset + pathFor(lang, 'privaatsus.html'),
       // The policy has to describe what actually happens: with no form service
       // configured the form falls back to mailto and no processor is involved.
-      sharingProcessor: company.formProvider ? dict.sharing_provider : dict.sharing_mailto,
-      formAction: config.formEndpoint || `mailto:${company.email}`,
-      formMode: config.formEndpoint ? 'post' : 'mailto',
+      sharingProcessor: portfolioMode
+        ? dict.sharing_demo
+        : (company.formProvider ? dict.sharing_provider : dict.sharing_mailto),
+      p_data: portfolioMode && dict.p_data_demo ? dict.p_data_demo : dict.p_data,
+      p_retention: portfolioMode && dict.p_retention_demo ? dict.p_retention_demo : dict.p_retention,
+      formDemoNotice: portfolioMode
+        ? `<p class="form-demo-notice" id="formDemoNotice" role="note" tabindex="-1">${esc(dict.form_demo_notice)}</p>`
+        : '',
+      formAction: portfolioMode ? '#' : (config.formEndpoint || `mailto:${company.email}`),
+      formMode: portfolioMode ? 'demo' : (config.formEndpoint ? 'post' : 'mailto'),
+      formSubmitAttrs: portfolioMode
+        ? 'type="button" aria-describedby="formDemoNotice"'
+        : 'type="submit"',
     };
 
     // Page URLs, relative to this page, plus the aria-current marker.
@@ -311,7 +323,8 @@ for (const lang of langs) {
   ]);
   // Consumed by this script rather than by a template placeholder.
   const usedInBuild = ['meta_title', 'meta_description', 'aria_lang_switch',
-    'footer_reg', 'footer_vat', 'legalName', 'sharing_mailto', 'sharing_provider'];
+    'footer_reg', 'footer_vat', 'legalName', 'sharing_mailto', 'sharing_provider',
+    'sharing_demo', 'form_demo_notice', 'p_data_demo', 'p_retention_demo'];
   // `_`-prefixed keys are deliberately parked (see `_archive`): copy kept for
   // markup that is currently commented out. Not an omission, so not reported.
   const unused = [...declared].filter(k =>

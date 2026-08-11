@@ -1,5 +1,9 @@
 <a class="skip-link" href="#main">{{skip_to_content}}</a>
 
+<div class="portfolio-notice" role="note">
+  <div class="container">{{portfolio_notice}}</div>
+</div>
+
 <header class="site-header">
   <div class="container header-row">
     <a class="brand" href="{{url_index}}" aria-label="{{aria_logo_home}}">
@@ -16,13 +20,11 @@
 
     <nav aria-label="{{aria_main_nav}}">
       <ul class="primary-nav">
-        <li><a href="{{url_ettevottest}}" {{current_ettevottest}}>{{nav_about}}</a></li>
-        <li><a href="{{url_teenused}}" {{current_teenused}}>{{nav_services}}</a></li>
-        <li><a href="{{url_uudised}}" {{current_uudised}}>{{nav_news}}</a></li>
-        <li><a href="{{url_kontakt}}" {{current_kontakt}}>{{nav_contact}}</a></li>
+        <li><a href="{{url_ettevottest}}" {{{current_ettevottest}}}>{{nav_about}}</a></li>
+        <li><a href="{{url_teenused}}" {{{current_teenused}}}>{{nav_services}}</a></li>
+        <li><a href="{{url_kontakt}}" {{{current_kontakt}}}>{{nav_contact}}</a></li>
       </ul>
     </nav>
-
     <div class="header-actions">
       <a class="phone-link" href="tel:{{company.phoneHref}}">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
@@ -43,10 +45,9 @@
     </div>
   </div>
   <nav class="mobile-nav" id="mobileNav" aria-label="{{aria_mobile_nav}}">
-    <a href="{{url_ettevottest}}" {{current_ettevottest}}>{{nav_about}}</a>
-    <a href="{{url_teenused}}" {{current_teenused}}>{{nav_services}}</a>
-    <a href="{{url_uudised}}" {{current_uudised}}>{{nav_news}}</a>
-    <a href="{{url_kontakt}}" {{current_kontakt}}>{{nav_contact}}</a>
+    <a href="{{url_ettevottest}}" {{{current_ettevottest}}}>{{nav_about}}</a>
+    <a href="{{url_teenused}}" {{{current_teenused}}}>{{nav_services}}</a>
+    <a href="{{url_kontakt}}" {{{current_kontakt}}}>{{nav_contact}}</a>
     <a href="tel:{{company.phoneHref}}">{{company.phone}}</a>
   </nav>
 </header>

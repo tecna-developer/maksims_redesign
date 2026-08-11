@@ -173,6 +173,22 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   left: 0;
 }
 
+.portfolio-notice {
+  background: #14141F;
+  color: #F5EDD6;
+  border-bottom: 1px solid rgba(245, 237, 214, .14);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: .03em;
+  text-align: center;
+}
+
+.portfolio-notice .container {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
 /* ---------- Header ---------- */
 .site-header {
   position: sticky;
@@ -1542,12 +1558,36 @@ section {
   color: var(--on-ink-muted);
 }
 
+.form-demo-notice {
+  margin: -10px 0 28px;
+  padding: 12px 14px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: rgba(184, 151, 58, .12);
+  color: var(--on-ink);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.form-demo-notice:focus {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
 :root[data-theme="dark"] .form-panel .section-title {
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .form-demo-notice {
   color: var(--ink);
 }
 
 @media (prefers-color-scheme:dark) {
   :root:not([data-theme="light"]) .form-panel .section-title {
+    color: var(--ink);
+  }
+
+  :root:not([data-theme="light"]) .form-demo-notice {
     color: var(--ink);
   }
 }

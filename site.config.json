@@ -1,5 +1,6 @@
 {
-  "siteUrl": "https://www.maksims.ee",
+  "siteUrl": "https://maksims.tolstouhhova.ee",
+  "portfolioMode": true,
   "defaultLang": "et",
   "langs": ["et", "ru", "en"],
 
