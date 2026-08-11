@@ -29,7 +29,10 @@
 
     "_source": "regCode and vatNumber per the Estonian e-Business Register (ariregister.rik.ee/est/company/10038498), registered name Osaühing Maksims. Leaving either empty makes the footer, contact card and JSON-LD omit it.",
     "regCode": "10038498",
-    "vatNumber": "EE100263873"
+    "vatNumber": "EE100263873",
+
+    "_formProvider": "Name of the form service that receives submissions, e.g. \"Formspree\". Set this together with formEndpoint: the privacy policy names it as a processor. While it is empty the policy states that the form opens the visitor's own mail client and no third party is involved — which is what actually happens in the mailto fallback.",
+    "formProvider": ""
   },
 
   "privacyUpdated": "2026-08-11"

@@ -258,6 +258,9 @@ for (const page of PAGES) {
       footerRequisites: requisites(dict),
       requisitesCard: requisitesCard(dict),
       privacyUrl: asset + pathFor(lang, 'privaatsus.html'),
+      // The policy has to describe what actually happens: with no form service
+      // configured the form falls back to mailto and no processor is involved.
+      sharingProcessor: company.formProvider ? dict.sharing_provider : dict.sharing_mailto,
       formAction: config.formEndpoint || `mailto:${company.email}`,
       formMode: config.formEndpoint ? 'post' : 'mailto',
     };
@@ -308,7 +311,7 @@ for (const lang of langs) {
   ]);
   // Consumed by this script rather than by a template placeholder.
   const usedInBuild = ['meta_title', 'meta_description', 'aria_lang_switch',
-    'footer_reg', 'footer_vat', 'legalName'];
+    'footer_reg', 'footer_vat', 'legalName', 'sharing_mailto', 'sharing_provider'];
   // `_`-prefixed keys are deliberately parked (see `_archive`): copy kept for
   // markup that is currently commented out. Not an omission, so not reported.
   const unused = [...declared].filter(k =>

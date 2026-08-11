@@ -284,14 +284,16 @@
       "h_data": "What data and why",
       "p_data": "Through the quote request form we collect the contact person's name, company name, email address and phone number, along with the information you enter about your business activity and document volume. We use this solely to answer your enquiry and prepare a quote. The legal basis is your consent and pre-contractual negotiations.",
       "h_retention": "Retention",
-      "p_retention": "We keep enquiry data for [TO FILL: retention period], after which it is deleted. If the enquiry becomes a client relationship, the retention periods set out in the Accounting Act apply.",
+      "p_retention": "We keep enquiry data for 3 years from the last contact, after which it is deleted. If the enquiry becomes a client relationship, the longer retention periods set out in the Accounting Act and other legislation apply.",
       "h_sharing": "Sharing with third parties",
-      "p_sharing": "We do not sell or share your data for marketing purposes. Data may be passed to our email and form service provider [TO FILL: provider name] solely to deliver the enquiry, and to public authorities where required by law.",
+      "p_sharing": "We do not sell or share your data for marketing purposes. {{sharingProcessor}} Data may be disclosed to public authorities only where required by law.",
       "h_rights": "Your rights",
       "p_rights": "You have the right to access your data, request its correction or deletion, restrict processing, object to it, and withdraw your consent at any time. To do so, write to info@maksims.ee. You also have the right to lodge a complaint with the Estonian Data Protection Inspectorate (www.aki.ee).",
       "h_cookies": "Cookies",
       "p_cookies": "This website uses no tracking or marketing cookies. Your language choice is stored only in your own browser (localStorage) and is not shared with anyone.",
-      "updated": "Last updated"
+      "updated": "Last updated",
+      "sharing_mailto": "The website form opens your own email programme, so the enquiry reaches us directly by email without passing through any third-party service.",
+      "sharing_provider": "Enquiries sent through the form are delivered to us by our service provider {{company.formProvider}}, solely for the purpose of delivering them."
     }
   }
 }

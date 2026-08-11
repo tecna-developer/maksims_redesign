@@ -282,14 +282,16 @@
       "h_data": "Millised andmed ja mis eesmärgil",
       "p_data": "Hinnapakkumise vormi kaudu kogume kontaktisiku nime, ettevõtte nime, e-posti aadressi ja telefoninumbri ning teie sisestatud andmed ettevõtte tegevuse ja dokumentide mahu kohta. Kasutame neid ainult teie päringule vastamiseks ja pakkumise koostamiseks. Õiguslik alus on teie nõusolek ning lepingueelsed läbirääkimised.",
       "h_retention": "Säilitamine",
-      "p_retention": "Säilitame päringu andmeid [TÄITA: säilitustähtaeg] jooksul, misjärel need kustutatakse. Kui päringust saab kliendisuhe, kohaldatakse raamatupidamise seadusest tulenevaid säilitustähtaegu.",
+      "p_retention": "Säilitame päringu andmeid 3 aastat viimasest kontaktist, misjärel need kustutatakse. Kui päringust saab kliendisuhe, kohaldatakse raamatupidamise seadusest ja teistest õigusaktidest tulenevaid pikemaid säilitustähtaegu.",
       "h_sharing": "Edastamine kolmandatele isikutele",
-      "p_sharing": "Me ei müü ega jaga teie andmeid turunduseesmärkidel. Andmeid võidakse edastada meie e-posti- ja vormiteenuse pakkujale [TÄITA: teenusepakkuja nimi] ainult päringu edastamiseks, samuti seaduses ettenähtud juhtudel riigiasutustele.",
+      "p_sharing": "Me ei müü ega jaga teie andmeid turunduseesmärkidel. {{sharingProcessor}} Andmeid võidakse edastada riigiasutustele üksnes seaduses ettenähtud juhtudel.",
       "h_rights": "Teie õigused",
       "p_rights": "Teil on õigus tutvuda oma andmetega, nõuda nende parandamist või kustutamist, piirata töötlemist, esitada vastuväiteid ja võtta nõusolek igal ajal tagasi. Selleks kirjutage aadressil info@maksims.ee. Samuti on teil õigus pöörduda Andmekaitse Inspektsiooni poole (www.aki.ee).",
       "h_cookies": "Küpsised",
       "p_cookies": "See veebileht ei kasuta jälgimis- ega turundusküpsiseid. Teie keelevalik salvestatakse ainult teie brauserisse (localStorage) ja seda ei edastata kellelegi.",
-      "updated": "Viimati uuendatud"
+      "updated": "Viimati uuendatud",
+      "sharing_mailto": "Veebilehe vorm avab teie enda e-posti programmi, seega jõuab päring meieni otse e-kirjaga, läbimata ühtegi kolmanda osapoole teenust.",
+      "sharing_provider": "Vormi kaudu saadetud päringud edastab meile teenusepakkuja {{company.formProvider}} — üksnes päringu kohaletoimetamiseks."
     }
   }
 }
