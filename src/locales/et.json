@@ -265,7 +265,13 @@
       "f_staff_4": "10+",
       "f_vat": "Ettevõte on käibemaksukohustuslane (KMKR)",
       "form_section_company": "Ettevõttest",
-      "form_section_company_note": "Kolm valikut, mille põhjal saame hinnavahemiku anda. Täpsustame ülejäänu vestluses."
+      "form_section_company_note": "Kolm valikut, mille põhjal saame hinnavahemiku anda. Täpsustame ülejäänu vestluses.",
+      "form_step3": "Lisainfo ja kinnitus",
+      "form_step_word": "Samm",
+      "form_back": "Tagasi",
+      "form_next": "Edasi",
+      "form_summary_title": "Kontrollige andmeid",
+      "form_not_filled": "täitmata"
     },
     "not_found": {
       "page_eyebrow": "Viga 404",

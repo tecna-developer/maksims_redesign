@@ -84,6 +84,132 @@
   var startDate = $('[data-min="today"]', form);
   if (startDate) startDate.min = new Date().toISOString().slice(0, 10);
 
+  /* --------------------------------------------------------------- steps ---
+   * The form is one page in the markup and stays that way without JS. Here it
+   * is folded into three steps; every field remains in the DOM the whole time,
+   * so a submission carries the same payload either way.
+   */
+  var steps = $$('.form-step', form);
+  var progress = $('#formProgress');
+  var backBtn = $('#formBack');
+  var nextBtn = $('#formNext');
+  var summary = $('#formSummary');
+  var summaryList = $('#formSummaryList');
+  var stepWord = form.getAttribute('data-step-word') || '';
+  var notFilled = form.getAttribute('data-not-filled') || '';
+  var current = 0;
+
+  /** The question: a group's legend, or the field's own label. */
+  function labelFor(field) {
+    var group = field.closest('.field-group');
+    if (group) {
+      var legend = $('legend', group);
+      return legend ? legend.textContent.trim() : field.name;
+    }
+    return ownLabel(field) || field.name;
+  }
+
+  /** The answer: always the control's own label, never the group's legend. */
+  function ownLabel(field) {
+    var lab = field.id && form.querySelector('label[for="' + field.id + '"]');
+    return lab ? lab.textContent.replace(/\s*\*\s*$/, '').trim() : '';
+  }
+
+  /** Recap of what the visitor entered, so step 3 is a review and not a leap. */
+  function renderSummary() {
+    if (!summaryList) return;
+    summaryList.innerHTML = '';
+    var rows = [];
+
+    ['f-name', 'f-email', 'f-phone'].forEach(function (id) {
+      var f = doc.getElementById(id);
+      if (f) rows.push([labelFor(f), f.value.trim()]);
+    });
+
+    ['legal_form', 'documents', 'staff_count'].forEach(function (name) {
+      var picked = form.querySelector('[name="' + name + '"]:checked');
+      var any = form.querySelector('[name="' + name + '"]');
+      if (any) rows.push([labelFor(any), picked ? ownLabel(picked) : '']);
+    });
+
+    var vat = doc.getElementById('f-vat');
+    if (vat && vat.checked) rows.push([labelFor(vat), '✓']);
+
+    rows.forEach(function (row) {
+      var dt = doc.createElement('dt');
+      dt.textContent = row[0];
+      var dd = doc.createElement('dd');
+      if (row[1]) {
+        dd.textContent = row[1];
+      } else {
+        dd.textContent = notFilled;
+        dd.setAttribute('data-empty', 'true');
+      }
+      summaryList.appendChild(dt);
+      summaryList.appendChild(dd);
+    });
+
+    if (summary) summary.hidden = rows.length === 0;
+  }
+
+  function showStep(index, moveFocus) {
+    current = Math.max(0, Math.min(steps.length - 1, index));
+
+    steps.forEach(function (step, i) { step.hidden = i !== current; });
+
+    if (progress) {
+      $$('li', progress).forEach(function (li, i) {
+        if (i === current) li.setAttribute('aria-current', 'step');
+        else li.removeAttribute('aria-current');
+        li.setAttribute('data-done', String(i < current));
+      });
+    }
+
+    var last = current === steps.length - 1;
+    if (backBtn) backBtn.hidden = current === 0;
+    if (nextBtn) nextBtn.hidden = last;
+    if (submitBtn) submitBtn.hidden = !last;
+
+    if (last) renderSummary();
+
+    if (moveFocus) {
+      var legend = $('legend', steps[current]);
+      var target = $('input, textarea, select', steps[current]);
+      if (legend) {
+        legend.setAttribute('tabindex', '-1');
+        legend.focus();
+      } else if (target) {
+        target.focus();
+      }
+      steps[current].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }
+
+  if (steps.length > 1 && nextBtn && backBtn) {
+    if (progress) {
+      progress.hidden = false;
+      // Only meaningful once it actually reflects a stepped form.
+      progress.setAttribute('aria-label', stepWord);
+    }
+    showStep(0, false);
+
+    nextBtn.addEventListener('click', function () {
+      var bad = validate(steps[current]);
+      if (bad.length) {
+        setStatus('error', null, MSG.summary);
+        bad[0].focus();
+        return;
+      }
+      clearStatus();
+      showStep(current + 1, true);
+    });
+
+    backBtn.addEventListener('click', function () {
+      clearStatus();
+      showStep(current - 1, true);
+    });
+  }
+
   var MSG = {
     required: form.getAttribute('data-msg-required'),
     email: form.getAttribute('data-msg-email'),
@@ -107,9 +233,10 @@
     if (box) { box.textContent = ''; box.classList.remove('show'); }
   }
 
-  function validate() {
+  /** `scope` limits validation to one step; omitted, it checks the whole form. */
+  function validate(scope) {
     var bad = [];
-    $$('[required]', form).forEach(function (field) {
+    $$('[required]', scope || form).forEach(function (field) {
       clearError(field);
       var empty = field.type === 'checkbox' ? !field.checked : !field.value.trim();
       if (empty) {
@@ -149,6 +276,12 @@
     statusBox.appendChild(p);
     statusBox.focus();
     statusBox.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
+  function clearStatus() {
+    if (!statusBox) return;
+    statusBox.className = 'form-status';
+    statusBox.innerHTML = '';
   }
 
   function setBusy(busy) {
@@ -195,6 +328,11 @@
     var bad = validate();
     if (bad.length) {
       e.preventDefault();
+      // The offending field may sit on a step that is currently hidden; showing
+      // an error about something the visitor cannot see would be a dead end.
+      var owner = bad[0].closest('.form-step');
+      var idx = owner ? steps.indexOf(owner) : -1;
+      if (idx >= 0 && idx !== current) showStep(idx, false);
       setStatus('error', null, MSG.summary);
       bad[0].focus();
       return;

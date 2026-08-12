@@ -265,7 +265,13 @@
       "f_staff_4": "10+",
       "f_vat": "Фирма — плательщик налога с оборота (KMKR)",
       "form_section_company": "О фирме",
-      "form_section_company_note": "Три ответа, по которым мы дадим вилку цены. Остальное уточним при разговоре."
+      "form_section_company_note": "Три ответа, по которым мы дадим вилку цены. Остальное уточним при разговоре.",
+      "form_step3": "Дополнительно и подтверждение",
+      "form_step_word": "Шаг",
+      "form_back": "Назад",
+      "form_next": "Далее",
+      "form_summary_title": "Проверьте данные",
+      "form_not_filled": "не заполнено"
     },
     "not_found": {
       "page_eyebrow": "Ошибка 404",

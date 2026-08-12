@@ -34,6 +34,13 @@
   --dur-2: 260ms;
   --ease: cubic-bezier(.22, .61, .36, 1);
   --bg-hover: #7F041F;
+  /* Quote form: dark surround, ivory card, white fields.
+     --form-border 3.76:1 on the field, --ink 17.4:1 on the card. */
+  --form-surround: #14141F;
+  --form-card: #FBF9F3;
+  --form-card-line: rgba(20, 20, 31, .10);
+  --form-field: #FFFFFF;
+  --form-border: #8B8371;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -56,6 +63,13 @@
     --on-ink: #F5EDD6;
     --on-ink-muted: #C9BFA0;
     --on-ink-line: rgba(245, 237, 214, .12);
+    /* Same idea inverted: raised dark card, translucent fields.
+       --form-border 3.7:1 on the field, --ink 12.4:1 inside it. */
+    --form-surround: #14120D;
+    --form-card: #2E2A1E;
+    --form-card-line: rgba(245, 237, 214, .12);
+    --form-field: rgba(245, 237, 214, .05);
+    --form-border: rgba(245, 237, 214, .5);
     --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 28px -14px rgba(0, 0, 0, .55);
   }
 }
@@ -79,6 +93,13 @@
   --on-ink: #F5EDD6;
   --on-ink-muted: #C9BFA0;
   --on-ink-line: rgba(245, 237, 214, .12);
+  /* Same idea inverted: raised dark card, translucent fields.
+     --form-border 3.7:1 on the field, --ink 12.4:1 inside it. */
+  --form-surround: #14120D;
+  --form-card: #2E2A1E;
+  --form-card-line: rgba(245, 237, 214, .12);
+  --form-field: rgba(245, 237, 214, .05);
+  --form-border: rgba(245, 237, 214, .5);
   --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 28px -14px rgba(0, 0, 0, .55);
 }
 
@@ -100,11 +121,25 @@
   --on-ink: #F5EDD6;
   --on-ink-muted: #C9BFA0;
   --on-ink-line: rgba(245, 237, 214, .14);
+  /* Quote form: dark surround, ivory card, white fields.
+     --form-border 3.76:1 on the field, --ink 17.4:1 on the card. */
+  --form-surround: #14141F;
+  --form-card: #FBF9F3;
+  --form-card-line: rgba(20, 20, 31, .10);
+  --form-field: #FFFFFF;
+  --form-border: #8B8371;
   --shadow: 0 1px 2px rgba(24, 34, 40, .06), 0 8px 24px -12px rgba(24, 34, 40, .18);
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* The UA rule for [hidden] is display:none at the lowest precedence, so any
+   explicit display (grid on the form steps, flex on the progress bar) silently
+   wins and the element stays on screen. */
+[hidden] {
+  display: none !important;
 }
 
 html {
@@ -1555,9 +1590,11 @@ section {
   gap: 48px;
 }
 
+/* The form comes first in the source, so it is what a phone shows on arrival and
+   what a screen reader reaches first. The wide column follows it. */
 @media (min-width:900px) {
   .contact-grid {
-    grid-template-columns: .8fr 1.2fr;
+    grid-template-columns: 1.2fr .8fr;
     gap: 64px;
   }
 }
@@ -1612,26 +1649,21 @@ section {
   color: var(--accent);
 }
 
-/* ---------- Quote form ---------- */
+/* ---------- Quote form ----------
+   The surround stays dark; the form itself sits on a light card, so filling it
+   in feels like writing on paper. In dark mode the card becomes a raised dark
+   surface and the fields go translucent instead of glowing cream.
+   Every colour below comes from the --form-* tokens, which is why this block no
+   longer needs the parallel set of dark-theme overrides it used to carry. */
 .form-panel {
-  background: var(--ink);
-  color: var(--on-ink-muted);
-  padding: 32px;
+  background: var(--form-surround);
+  padding: 28px 22px;
   border-radius: var(--radius);
-  transition: background var(--dur-2) var(--ease);
 }
 
-:root[data-theme="dark"] .form-panel {
-  background: transparent;
-  color: var(--ink-muted);
-  padding: 0;
-}
-
-@media (prefers-color-scheme:dark) {
-  :root:not([data-theme="light"]) .form-panel {
-    background: transparent;
-    color: var(--ink-muted);
-    padding: 0;
+@media (min-width:640px) {
+  .form-panel {
+    padding: 36px 32px;
   }
 }
 
@@ -1647,37 +1679,17 @@ section {
   color: var(--on-ink-muted);
 }
 
-.form-demo-notice {
-  margin: -10px 0 28px;
-  padding: 12px 14px;
-  border: 1px solid var(--accent);
-  border-radius: var(--radius);
-  background: rgba(184, 151, 58, .12);
-  color: var(--on-ink);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.form-demo-notice:focus {
-  outline: 2px solid var(--focus);
-  outline-offset: 3px;
-}
-
-:root[data-theme="dark"] .form-panel .section-title {
+.form-card {
+  background: var(--form-card);
+  border: 1px solid var(--form-card-line);
+  border-radius: 14px;
+  padding: 24px 20px;
   color: var(--ink);
 }
 
-:root[data-theme="dark"] .form-demo-notice {
-  color: var(--ink);
-}
-
-@media (prefers-color-scheme:dark) {
-  :root:not([data-theme="light"]) .form-panel .section-title {
-    color: var(--ink);
-  }
-
-  :root:not([data-theme="light"]) .form-demo-notice {
-    color: var(--ink);
+@media (min-width:640px) {
+  .form-card {
+    padding: 32px 30px;
   }
 }
 
@@ -1713,22 +1725,8 @@ section {
   color: var(--ink);
 }
 
-.form-panel .field label {
-  color: var(--on-ink);
-}
-
-:root[data-theme="dark"] .form-panel .field label {
-  color: var(--ink);
-}
-
-@media (prefers-color-scheme:dark) {
-  :root:not([data-theme="light"]) .form-panel .field label {
-    color: var(--ink);
-  }
-}
-
 .field .req {
-  color: var(--brass);
+  color: var(--seal);
 }
 
 .field input[type="text"], .field input[type="email"], .field input[type="tel"], .field input[type="number"],
@@ -1736,9 +1734,9 @@ section {
   font-family: var(--sans);
   font-size: 16px;
   color: var(--ink);
-  background: var(--surface);
-  border: 1px solid var(--field-border);
-  border-radius: var(--radius);
+  background: var(--form-field);
+  border: 1px solid var(--form-border);
+  border-radius: 8px;
   padding: 11px 12px;
   min-height: 44px;
   width: 100%;
@@ -1775,79 +1773,185 @@ section {
   display: block;
 }
 
-.form-panel .field-error {
-  color: #F0A5A5;
-}
-
-:root[data-theme="dark"] .form-panel .field-error {
-  color: var(--seal);
-}
-
-@media (prefers-color-scheme:dark) {
-  :root:not([data-theme="light"]) .form-panel .field-error {
-    color: var(--seal);
-  }
-}
-
-/* ---------- Fieldsets ---------- */
+/* ---------- Steps ---------- */
 .form-section {
   border: 0;
-  border-top: 1px solid var(--on-ink-line);
   margin: 0;
-  padding: 24px 0 0;
+  padding: 0;
   display: grid;
   gap: 20px;
 }
 
-.form-section:first-of-type {
-  border-top: 0;
-  padding-top: 0;
-}
-
-.form-section>legend {
+.form-section > legend {
   padding: 0;
   font-family: var(--sans);
   font-size: 12.5px;
   font-weight: 600;
   letter-spacing: .08em;
   text-transform: uppercase;
-  color: var(--on-ink);
+  color: var(--ink);
 }
 
 .form-section-note {
   font-size: 13.5px;
-  color: var(--on-ink-muted);
+  color: var(--ink-muted);
   margin-top: -12px;
 }
 
-:root[data-theme="dark"] .form-section>legend,
-:root[data-theme="dark"] .form-section {
-  color: var(--ink);
-  border-color: var(--line);
-}
-
-:root[data-theme="dark"] .form-section-note {
+.legend-optional {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
   color: var(--ink-muted);
 }
 
-@media (prefers-color-scheme:dark) {
-  :root:not([data-theme="light"]) .form-section>legend {
-    color: var(--ink);
-  }
+/* Radio groups are fieldsets too, but visually inline with other fields */
+.field-group {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
-  :root:not([data-theme="light"]) .form-section {
-    border-color: var(--line);
-  }
+.field-group > legend {
+  padding: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
 
-  :root:not([data-theme="light"]) .form-section-note {
-    color: var(--ink-muted);
+/* ---------- Progress ---------- */
+.form-progress {
+  display: flex;
+  gap: 6px;
+  list-style: none;
+  margin: 0 0 22px;
+  padding: 0;
+}
+
+.form-progress li {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 3px solid var(--on-ink-line);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--on-ink-muted);
+}
+
+.form-progress li[data-done="true"] {
+  border-top-color: var(--on-ink-muted);
+}
+
+.form-progress li[aria-current="step"] {
+  border-top-color: var(--accent);
+  color: var(--on-ink);
+}
+
+.form-progress-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  font-size: 11.5px;
+}
+
+.form-progress li[aria-current="step"] .form-progress-num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Labels are noise on a narrow screen; the numbers and the bar carry it. */
+@media (max-width:520px) {
+  .form-progress li span:not(.form-progress-num) {
+    display: none;
   }
+}
+
+/* ---------- Navigation ---------- */
+.form-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.form-nav .btn-primary {
+  background: var(--ink);
+  color: var(--form-card);
+  border-color: var(--ink);
+}
+
+.form-nav .btn-ghost {
+  color: var(--ink);
+  border-color: var(--form-border);
+}
+
+.form-nav .btn-ghost:hover {
+  border-color: var(--ink);
+  background: transparent;
+}
+
+/* ---------- Summary ---------- */
+.form-summary {
+  border: 1px dashed var(--form-border);
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.form-summary h3 {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 12px;
+}
+
+.form-summary dl {
+  margin: 0;
+  display: grid;
+  gap: 8px 16px;
+  font-size: 14.5px;
+}
+
+@media (min-width:480px) {
+  .form-summary dl {
+    grid-template-columns: auto 1fr;
+  }
+}
+
+.form-summary dt {
+  color: var(--ink-muted);
+}
+
+.form-summary dd {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.form-summary dd[data-empty="true"] {
+  color: var(--ink-muted);
+  font-weight: 400;
+  font-style: italic;
 }
 
 /* ---------- Pill choices ----------
    A real <input type="radio"> stays in the DOM for semantics, keyboard and form
-   submission; it is visually replaced by its <label>. Tokens rather than fixed
-   colours, so the checked state keeps its 15.6:1 in both themes. */
+   submission; it is visually replaced by its <label>. */
 .pills {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
@@ -1879,11 +1983,10 @@ section {
   /* 46px tall — comfortably over the 44px touch-target minimum */
   min-height: 46px;
   padding: 12px 14px;
-  border: 1px solid rgba(245, 237, 214, .4);
-  /* 3.45:1 — граница элемента управления */
-  border-radius: var(--radius);
-  background: rgba(245, 237, 214, .06);
-  color: var(--on-ink);
+  border: 1px solid var(--form-border);
+  border-radius: 8px;
+  background: var(--form-field);
+  color: var(--ink);
   font-family: var(--sans);
   font-size: 15px;
   font-weight: 500;
@@ -1894,19 +1997,18 @@ section {
     color var(--dur-1) var(--ease);
 }
 
-.pill input:hover+label {
-  border-color: rgba(245, 237, 214, .6);
-  background: rgba(245, 237, 214, .12);
+.pill input:hover + label {
+  border-color: var(--ink);
 }
 
-.pill input:checked+label {
-  background: var(--on-ink);
-  border-color: var(--on-ink);
-  color: var(--accent-ink);
+.pill input:checked + label {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--form-card);
   font-weight: 600;
 }
 
-.pill input:focus-visible+label {
+.pill input:focus-visible + label {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
@@ -1917,48 +2019,15 @@ section {
   }
 }
 
-.legend-optional {
-  text-transform: none;
-  letter-spacing: 0;
-  font-weight: 400;
-  opacity: .75;
-}
-
-/* Radio groups are fieldsets too, but visually inline with other fields */
-.field-group {
-  border: 0;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.field-group>legend {
-  padding: 0;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--on-ink);
-}
-
-:root[data-theme="dark"] .field-group>legend {
-  color: var(--ink);
-}
-
-@media (prefers-color-scheme:dark) {
-  :root:not([data-theme="light"]) .field-group>legend {
-    color: var(--ink);
-  }
-}
-
 /* ---------- Consent + anti-spam ---------- */
 .field-consent {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   font-size: 14px;
+  font-weight: 400;
   line-height: 1.5;
-  color: var(--on-ink-muted);
+  color: var(--ink-muted);
 }
 
 .field-consent input {
@@ -1973,16 +2042,6 @@ section {
   color: inherit;
 }
 
-:root[data-theme="dark"] .field-consent {
-  color: var(--ink-muted);
-}
-
-@media (prefers-color-scheme:dark) {
-  :root:not([data-theme="light"]) .field-consent {
-    color: var(--ink-muted);
-  }
-}
-
 /* Honeypot: off-screen for humans, still filled by naive bots.
    display:none is skipped by some bots, so position it away instead. */
 .hp-field {
@@ -1993,11 +2052,18 @@ section {
   overflow: hidden;
 }
 
+.form-note {
+  font-size: 13px;
+  color: var(--ink-muted);
+  max-width: 60ch;
+}
+
 /* ---------- Form status ---------- */
 .form-status {
   display: none;
-  border-radius: var(--radius);
+  border-radius: 10px;
   padding: 18px 20px;
+  margin-bottom: 20px;
   font-size: 15px;
   line-height: 1.55;
   scroll-margin-top: 96px;
@@ -2010,50 +2076,19 @@ section {
 .form-status h3 {
   font-size: 18px;
   margin-bottom: 6px;
+  color: var(--ink);
 }
 
 .form-status--ok {
   border: 1px solid var(--accent);
-  background: rgba(255, 255, 255, .06);
-  color: var(--on-ink-muted);
-}
-
-.form-status--ok h3 {
-  color: var(--on-ink);
+  background: var(--form-field);
+  color: var(--ink-muted);
 }
 
 .form-status--error {
   border: 1px solid var(--seal);
-  background: rgba(196, 106, 106, .12);
-  color: var(--on-ink);
-}
-
-:root[data-theme="dark"] .form-status--ok {
-  background: var(--surface-2);
-  color: var(--ink-muted);
-}
-
-:root[data-theme="dark"] .form-status--ok h3 {
+  background: var(--form-field);
   color: var(--ink);
-}
-
-:root[data-theme="dark"] .form-status--error {
-  color: var(--ink);
-}
-
-@media (prefers-color-scheme:dark) {
-  :root:not([data-theme="light"]) .form-status--ok {
-    background: var(--surface-2);
-    color: var(--ink-muted);
-  }
-
-  :root:not([data-theme="light"]) .form-status--ok h3 {
-    color: var(--ink);
-  }
-
-  :root:not([data-theme="light"]) .form-status--error {
-    color: var(--ink);
-  }
 }
 
 .btn[aria-busy="true"] {
@@ -2061,66 +2096,15 @@ section {
   pointer-events: none;
 }
 
-.field-radio-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  align-items: center;
-  min-height: 44px;
-}
-
-.field-radio {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 14.5px;
-  color: var(--ink);
-}
-
-.form-panel .field-radio {
+.form-demo-notice {
+  border: 1px dashed var(--on-ink-line);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  font-size: 13.5px;
   color: var(--on-ink-muted);
 }
 
-:root[data-theme="dark"] .form-panel .field-radio {
-  color: var(--ink-muted);
-}
-
-@media (prefers-color-scheme:dark) {
-  :root:not([data-theme="light"]) .form-panel .field-radio {
-    color: var(--ink-muted);
-  }
-}
-
-.field-radio input {
-  width: 17px;
-  height: 17px;
-  accent-color: var(--accent-deep);
-}
-
-.field-hint {
-  font-size: 13px;
-  color: var(--ink-muted);
-}
-
-.form-note {
-  font-size: 13px;
-  color: var(--ink-muted);
-  max-width: 60ch;
-}
-
-.form-panel .form-note {
-  color: var(--on-ink-muted);
-}
-
-:root[data-theme="dark"] .form-panel .form-note {
-  color: var(--ink-muted);
-}
-
-@media (prefers-color-scheme:dark) {
-  :root:not([data-theme="light"]) .form-panel .form-note {
-    color: var(--ink-muted);
-  }
-}
 
 /* ---------- Contact page extras ---------- */
 .contact-card dl {

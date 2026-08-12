@@ -265,7 +265,13 @@
       "f_staff_4": "10+",
       "f_vat": "The company is VAT registered (KMKR)",
       "form_section_company": "About the company",
-      "form_section_company_note": "Three answers let us give you a price range. We will clarify the rest on a call."
+      "form_section_company_note": "Three answers let us give you a price range. We will clarify the rest on a call.",
+      "form_step3": "Details and confirmation",
+      "form_step_word": "Step",
+      "form_back": "Back",
+      "form_next": "Next",
+      "form_summary_title": "Check your details",
+      "form_not_filled": "not filled in"
     },
     "not_found": {
       "page_eyebrow": "Error 404",
