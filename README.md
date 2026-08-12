@@ -22,14 +22,21 @@ node build.mjs --serve
 ## Структура
 
 ```
-site.config.json      домен, контакты, реквизиты, endpoint формы
+site.config.json      домен, portfolioMode, контакты, реквизиты, endpoint формы
+vercel.json           cleanUrls (сборка и каталог вывода — в дашборде Vercel)
 src/locales/*.json    все тексты: { common: {...}, pages: { index: {...}, ... } }
 src/partials/         head, header, footer, contact-band — общие для всех страниц
 src/pages/            шаблоны страниц ({{key}} вместо текста)
 build.mjs             генератор
-dist/                 результат сборки (не редактировать руками)
+dist/                 результат сборки (не редактировать руками, не в git)
 styles.css  app.js    правятся здесь, копируются в dist/ при сборке
+favicon.svg           бордовая монограмма на кремовом
+og-maksims.png        превью для соцсетей 1200×630
+apple-touch-icon.png  иконка для домашнего экрана 180×180
 ```
+
+Три последних файла необязательны: без них сборка просто не выводит
+соответствующие meta-теги, а не ссылается на 404.
 
 ## Как это работает
 
