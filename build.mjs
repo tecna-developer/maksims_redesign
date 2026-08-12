@@ -61,15 +61,28 @@ const esc = s => String(s)
 
 // ---------------------------------------------------------------- URL helpers
 
-/** Where a page lives, relative to the site root. */
-const pathFor = (lang, file) => (lang === defaultLang ? file : `${lang}/${file}`);
+/** Where a page is written on disk, relative to dist/. */
+const filePathFor = (lang, file) => (lang === defaultLang ? file : `${lang}/${file}`);
 
-/** Prefix that gets you from a page back to the site root. */
-const assetPrefix = lang => (lang === defaultLang ? '' : '../');
+/**
+ * Public URL path, root-absolute, matching Vercel's cleanUrls.
+ *
+ *   index.html      ->  /        /ru/
+ *   teenused.html   ->  /teenused        /ru/teenused
+ *
+ * Root-absolute rather than relative on purpose: with cleanUrls a language home
+ * is reachable as both /ru and /ru/, and those two give different bases for
+ * relative resolution — `../styles.css` would break on one of them. Absolute
+ * paths sidestep that entirely. The site is served from a domain root, so this
+ * costs nothing.
+ */
+const urlFor = (lang, file) => {
+  const dir = lang === defaultLang ? '/' : `/${lang}/`;
+  return file === 'index.html' ? dir : dir + file.replace(/\.html$/, '');
+};
 
-/** Link from a page in `fromLang` to the same page in `toLang`. */
-const crossLink = (fromLang, toLang, file) =>
-  assetPrefix(fromLang) + pathFor(toLang, file);
+/** Assets always live at the site root. */
+const ASSET = '/';
 
 // ------------------------------------------------------------------ rendering
 
@@ -122,7 +135,7 @@ function langSwitch(lang, file, dict) {
   const items = langs.map(l => {
     const current = l === lang;
     // A real link, so it works without JS and search engines can follow it.
-    return `      <a class="lang-btn" href="${esc(crossLink(lang, l, file))}" hreflang="${l}" lang="${l}"` +
+    return `      <a class="lang-btn" href="${esc(urlFor(l, file))}" hreflang="${l}" lang="${l}"` +
       (current ? ' aria-current="true"' : '') +
       `>${label[l]}</a>`;
   }).join('\n');
@@ -131,8 +144,8 @@ function langSwitch(lang, file, dict) {
 
 function hreflang(file) {
   const rows = langs.map(l =>
-    `<link rel="alternate" hreflang="${l}" href="${siteUrl}/${pathFor(l, file)}" />`);
-  rows.push(`<link rel="alternate" hreflang="x-default" href="${siteUrl}/${pathFor(defaultLang, file)}" />`);
+    `<link rel="alternate" hreflang="${l}" href="${siteUrl}${urlFor(l, file)}" />`);
+  rows.push(`<link rel="alternate" hreflang="x-default" href="${siteUrl}${urlFor(defaultLang, file)}" />`);
   return rows.join('\n');
 }
 
@@ -143,7 +156,7 @@ function jsonLd(lang, pageId, dict) {
     '@id': `${siteUrl}/#organization`,
     name: company.displayName,
     legalName: company.legalName,
-    url: `${siteUrl}/${pathFor(lang, 'index.html')}`,
+    url: `${siteUrl}${urlFor(lang, 'index.html')}`,
     email: company.email,
     telephone: company.phone,
     foundingDate: company.founded,
@@ -229,7 +242,7 @@ for (const page of PAGES) {
     if (!loc.pages[page.id]) { missing.push(`${lang}.json has no pages.${page.id}`); continue; }
 
     const dict = { ...loc.common, ...loc.pages[page.id] };
-    const asset = assetPrefix(lang);
+    const asset = ASSET;
 
     const ctx = {
       ...dict,
@@ -250,7 +263,7 @@ for (const page of PAGES) {
       portfolioBanner: portfolioMode
         ? `\n<div class="portfolio-notice" role="note">\n  <div class="container">${esc(dict.portfolio_notice)}</div>\n</div>\n`
         : '',
-      canonical: `${siteUrl}/${pathFor(lang, page.file)}`,
+      canonical: `${siteUrl}${urlFor(lang, page.file)}`,
       ogLocale: OG_LOCALE[lang],
       ogLocaleAlt: langs.filter(l => l !== lang)
         .map(l => `<meta property="og:locale:alternate" content="${OG_LOCALE[l]}" />`).join('\n'),
@@ -270,7 +283,7 @@ for (const page of PAGES) {
       langSwitch: langSwitch(lang, page.file, dict),
       footerRequisites: requisites(dict),
       requisitesCard: requisitesCard(dict),
-      privacyUrl: asset + pathFor(lang, 'privaatsus.html'),
+      privacyUrl: urlFor(lang, 'privaatsus.html'),
       // The policy has to describe what actually happens: with no form service
       // configured the form falls back to mailto and no processor is involved.
       sharingProcessor: portfolioMode
@@ -288,9 +301,9 @@ for (const page of PAGES) {
         : 'type="submit"',
     };
 
-    // Page URLs, relative to this page, plus the aria-current marker.
+    // Page URLs stay within the current language, plus the aria-current marker.
     for (const p of PAGES) {
-      ctx[`url_${p.id}`] = p.file;
+      ctx[`url_${p.id}`] = urlFor(lang, p.file);
       ctx[`current_${p.id}`] = p.id === page.id ? 'aria-current="page"' : '';
     }
 
@@ -311,7 +324,7 @@ ${body.trim()}
 </html>
 `;
 
-    const dest = path.join(OUT, pathFor(lang, page.file));
+    const dest = path.join(OUT, filePathFor(lang, page.file));
     fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.writeFileSync(dest, html, 'utf8');
     written++;
@@ -362,9 +375,9 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${PAGES.flatMap(p => langs.map(lang => `  <url>
-    <loc>${siteUrl}/${pathFor(lang, p.file)}</loc>
-${langs.map(l => `    <xhtml:link rel="alternate" hreflang="${l}" href="${siteUrl}/${pathFor(l, p.file)}"/>`).join('\n')}
-    <xhtml:link rel="alternate" hreflang="x-default" href="${siteUrl}/${pathFor(defaultLang, p.file)}"/>
+    <loc>${siteUrl}${urlFor(lang, p.file)}</loc>
+${langs.map(l => `    <xhtml:link rel="alternate" hreflang="${l}" href="${siteUrl}${urlFor(l, p.file)}"/>`).join('\n')}
+    <xhtml:link rel="alternate" hreflang="x-default" href="${siteUrl}${urlFor(defaultLang, p.file)}"/>
     <priority>${p.priority}</priority>
   </url>`)).join('\n')}
 </urlset>
@@ -408,17 +421,36 @@ if (process.argv.includes('--serve')) {
     '.txt': 'text/plain; charset=utf-8', '.json': 'application/json; charset=utf-8',
   };
 
+  // Mirrors Vercel's cleanUrls so local preview matches production: extensionless
+  // paths resolve to .html, and a .html request 308-redirects to the clean form.
+  const resolve = urlPath => {
+    const candidates = urlPath.endsWith('/')
+      ? [path.join(OUT, urlPath, 'index.html')]
+      : [path.join(OUT, urlPath),
+         path.join(OUT, urlPath + '.html'),
+         path.join(OUT, urlPath, 'index.html')];
+    return candidates.find(f =>
+      f.startsWith(OUT) && fs.existsSync(f) && fs.statSync(f).isFile());
+  };
+
   createServer((req, res) => {
-    const clean = decodeURIComponent(req.url.split('?')[0]);
-    let file = path.join(OUT, clean);
-    // Contain traversal to dist/.
-    if (!file.startsWith(OUT)) { res.writeHead(403).end('Forbidden'); return; }
-    if (clean.endsWith('/')) file = path.join(file, 'index.html');
-    if (!fs.existsSync(file) || fs.statSync(file).isDirectory()) {
-      res.writeHead(404, { 'Content-Type': 'text/plain' }).end('404');
+    const urlPath = decodeURIComponent(req.url.split('?')[0]);
+
+    if (!path.join(OUT, urlPath).startsWith(OUT)) {
+      res.writeHead(403).end('Forbidden');
       return;
     }
+
+    if (urlPath.endsWith('.html')) {
+      const clean = urlPath.replace(/\/index\.html$/, '/').replace(/\.html$/, '');
+      res.writeHead(308, { Location: clean || '/' }).end();
+      return;
+    }
+
+    const file = resolve(urlPath);
+    if (!file) { res.writeHead(404, { 'Content-Type': 'text/plain' }).end('404'); return; }
+
     res.writeHead(200, { 'Content-Type': TYPES[path.extname(file)] || 'application/octet-stream' });
     fs.createReadStream(file).pipe(res);
-  }).listen(port, () => console.log(`  Serving dist/ at http://localhost:${port}/\n`));
+  }).listen(port, () => console.log(`  Serving dist/ at http://localhost:${port}/ (cleanUrls)\n`));
 }

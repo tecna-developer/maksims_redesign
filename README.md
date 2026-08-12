@@ -70,19 +70,34 @@ HTML-комментариев сборка не проверяет, поэтом
 
 ## URL
 
-Эстонский — в корне (существующие адреса не меняются, редиректы не нужны):
+Адреса без расширения — `cleanUrls: true` в `vercel.json`. Эстонский в корне:
 
 ```
-/index.html         /ru/index.html         /en/index.html
-/teenused.html      /ru/teenused.html      /en/teenused.html
-/ettevottest.html   /ru/ettevottest.html   /en/ettevottest.html
-/uudised.html       /ru/uudised.html       /en/uudised.html
-/kontakt.html       /ru/kontakt.html       /en/kontakt.html
-/privaatsus.html    /ru/privaatsus.html    /en/privaatsus.html
+/                   /ru/                   /en/
+/teenused           /ru/teenused           /en/teenused
+/ettevottest        /ru/ettevottest        /en/ettevottest
+/uudised            /ru/uudised            /en/uudised
+/kontakt            /ru/kontakt            /en/kontakt
+/privaatsus         /ru/privaatsus         /en/privaatsus
 ```
+
+Файлы на диске по-прежнему `dist/teenused.html` и `dist/ru/teenused.html` —
+меняется только то, как они отдаются. Старые `.html`-адреса не ломаются: Vercel
+отвечает на них редиректом 308 на чистую форму, так что закладки и внешние
+ссылки продолжают работать.
 
 У каждой страницы свои `title`, `description`, `canonical`, взаимные `hreflang`,
 OG-теги и JSON-LD `AccountingService`.
+
+**Пути к ассетам и внутренние ссылки — от корня** (`/styles.css`, `/ru/kontakt`),
+а не относительные. Это не стилистика: при `cleanUrls` языковая главная доступна
+и как `/ru`, и как `/ru/`, а у этих двух адресов разная база для относительного
+разрешения — `../styles.css` сломался бы на одном из них. Абсолютные пути
+снимают вопрос целиком. Обратная сторона: сайт обязан жить в корне домена, а не
+в подкаталоге.
+
+Локальный сервер (`node build.mjs --serve`) повторяет это поведение — чистые
+адреса и 308 со старых, — чтобы проверка на localhost совпадала с продакшеном.
 
 ## `portfolioMode` — режим витрины
 
@@ -157,9 +172,11 @@ node build.mjs && grep -c noindex dist/index.html   # должно быть 0
 
 ## Прочее
 
-- `uudised.html` собирается и попадает в sitemap, но из шапки убран — ссылка
-  осталась только в футере.
-- `/` и `/index.html` оба отдают 200. `canonical` указывает на `/index.html`,
-  так что склейка работает. Если захочется адресов без расширения — это
-  `cleanUrls` в `vercel.json` плюс правка `pathFor()`, `canonical`, `hreflang`
-  и `sitemap` разом; сейчас схема сохраняет существующие `.html`-адреса.
+- `uudised` собирается и попадает в sitemap, но из шапки убран — ссылка осталась
+  только в футере.
+- `/ru` и `/ru/` оба отдают контент без редиректа: `trailingSlash` не задан, и
+  это документированное поведение Vercel. `canonical` выбирает форму со слэшем,
+  так что дубль склеивается.
+- `vercel.json` содержит только `cleanUrls`. Команда сборки и каталог вывода
+  заданы в дашборде Vercel — намеренно не дублирую их здесь, чтобы конфиг в
+  репозитории не перекрыл рабочие настройки.
