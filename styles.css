@@ -983,7 +983,7 @@ section {
 }
 
 .surface-alt {
-  background: var(--surface-2);
+  /* background: var(--surface-2); */
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
@@ -1796,7 +1796,7 @@ section {
   gap: 20px;
 }
 
-.form-section > legend {
+.form-section>legend {
   padding: 0;
   font-family: var(--sans);
   font-size: 12.5px;
@@ -1829,7 +1829,7 @@ section {
   gap: 6px;
 }
 
-.field-group > legend {
+.field-group>legend {
   padding: 0;
   font-size: 13.5px;
   font-weight: 600;
@@ -2021,18 +2021,18 @@ section {
     color var(--dur-1) var(--ease);
 }
 
-.pill input:hover + label {
+.pill input:hover+label {
   border-color: var(--ink);
 }
 
-.pill input:checked + label {
+.pill input:checked+label {
   background: var(--ink);
   border-color: var(--ink);
   color: var(--form-card);
   font-weight: 600;
 }
 
-.pill input:focus-visible + label {
+.pill input:focus-visible+label {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
