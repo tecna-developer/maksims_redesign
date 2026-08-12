@@ -239,6 +239,17 @@ for (const page of PAGES) {
       company,
       privacyUpdated: config.privacyUpdated,
       portfolioMode,
+      // Both of these are portfolio-only. They are generated rather than written
+      // into the partials so that turning portfolioMode off really does return
+      // the site to a launchable state — a stray noindex would keep all 18 pages
+      // out of the index, and a stray banner would tell visitors the client's
+      // own site is an unofficial concept.
+      robotsMeta: portfolioMode
+        ? '<meta name="robots" content="noindex, nofollow, noarchive" />'
+        : '',
+      portfolioBanner: portfolioMode
+        ? `\n<div class="portfolio-notice" role="note">\n  <div class="container">${esc(dict.portfolio_notice)}</div>\n</div>\n`
+        : '',
       canonical: `${siteUrl}/${pathFor(lang, page.file)}`,
       ogLocale: OG_LOCALE[lang],
       ogLocaleAlt: langs.filter(l => l !== lang)
@@ -324,7 +335,8 @@ for (const lang of langs) {
   // Consumed by this script rather than by a template placeholder.
   const usedInBuild = ['meta_title', 'meta_description', 'aria_lang_switch',
     'footer_reg', 'footer_vat', 'legalName', 'sharing_mailto', 'sharing_provider',
-    'sharing_demo', 'form_demo_notice', 'p_data_demo', 'p_retention_demo'];
+    'sharing_demo', 'form_demo_notice', 'p_data_demo', 'p_retention_demo',
+    'portfolio_notice'];
   // `_`-prefixed keys are deliberately parked (see `_archive`): copy kept for
   // markup that is currently commented out. Not an omission, so not reported.
   const unused = [...declared].filter(k =>
@@ -359,8 +371,12 @@ ${langs.map(l => `    <xhtml:link rel="alternate" hreflang="${l}" href="${siteUr
 `;
 fs.writeFileSync(path.join(OUT, 'sitemap.xml'), sitemap, 'utf8');
 
-fs.writeFileSync(path.join(OUT, 'robots.txt'),
-  `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`, 'utf8');
+// In portfolio mode every page carries noindex, so pointing crawlers at a
+// sitemap of 18 URLs only to turn them away is contradictory. Disallow instead,
+// and don't advertise the sitemap.
+fs.writeFileSync(path.join(OUT, 'robots.txt'), portfolioMode
+  ? '# Portfolio preview — not for indexing.\nUser-agent: *\nDisallow: /\n'
+  : `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`, 'utf8');
 
 // ---------------------------------------------------------------------- report
 
