@@ -21,9 +21,13 @@
   --on-ink-line: rgba(245, 237, 214, .14);
   --radius: 3px;
   --shadow: 0 1px 2px rgba(24, 34, 40, .06), 0 8px 24px -12px rgba(24, 34, 40, .18);
+  /* Self-hosted, see fonts.css. DM Sans and DM Mono were replaced because
+     neither ships Cyrillic in any subset, so the whole Russian version fell
+     back to a system font. Manrope keeps the geometric character; IBM Plex
+     Mono is the lightest mono with proper Cyrillic. */
   --serif: "Cormorant Garamond", Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
-  --sans: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --mono: "DM Mono", "Courier New", monospace;
+  --sans: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Courier New", monospace;
   --container: 1180px;
   --dur-1: 150ms;
   --dur-2: 260ms;

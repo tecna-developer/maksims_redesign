@@ -36,10 +36,26 @@ const PAGES = [
 ];
 
 const STATIC_ASSETS = [
-  'styles.css', 'app.js',
+  'styles.css', 'fonts.css', 'app.js',
   'logo-maksims-burgundy.svg', 'logo-maksims-light.svg',
   'favicon.svg',
 ];
+
+// Self-hosted woff2 (see fonts.css). Copied wholesale.
+const FONT_DIR = 'fonts';
+
+/**
+ * Preload only what the first paint needs, in the subset this language uses:
+ * body text (Manrope 400/600) and the page heading (Cormorant 600). Preloading
+ * the Cyrillic cut on Estonian pages, or vice versa, would just waste bytes.
+ */
+const fontPreload = lang => {
+  const subset = lang === 'ru' ? 'cyrillic' : 'latin';
+  return ['manrope-400', 'manrope-600', 'cormorant-garamond-600']
+    .map(base => `<link rel="preload" as="font" type="font/woff2" crossorigin ` +
+      `href="/fonts/${base}-${subset}.woff2" />`)
+    .join('\n');
+};
 
 // Copied when present; their absence downgrades the meta tags rather than
 // pointing them at a 404.
@@ -222,6 +238,7 @@ function requisitesCard(dict) {
 const missing = [];
 const warnings = [];
 let written = 0;
+let fontCount = 0;
 
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
@@ -252,6 +269,7 @@ for (const page of PAGES) {
       company,
       privacyUpdated: config.privacyUpdated,
       portfolioMode,
+      fontPreload: fontPreload(lang),
       // Both of these are portfolio-only. They are generated rather than written
       // into the partials so that turning portfolioMode off really does return
       // the site to a launchable state — a stray noindex would keep all 18 pages
@@ -371,6 +389,21 @@ for (const asset of OPTIONAL_ASSETS) {
   else warnings.push(`optional asset missing: ${asset} — related meta tags omitted`);
 }
 
+// Fonts: the woff2 files plus the OFL licences they must be redistributed with.
+const fontSrc = path.join(ROOT, FONT_DIR);
+if (fs.existsSync(fontSrc)) {
+  fs.mkdirSync(path.join(OUT, FONT_DIR), { recursive: true });
+  let n = 0;
+  for (const f of fs.readdirSync(fontSrc)) {
+    if (f.startsWith('_')) continue;
+    fs.copyFileSync(path.join(fontSrc, f), path.join(OUT, FONT_DIR, f));
+    if (f.endsWith('.woff2')) n++;
+  }
+  fontCount = n;
+} else {
+  warnings.push(`${FONT_DIR}/ not found — pages will fall back to system fonts`);
+}
+
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -407,7 +440,7 @@ if (missing.length) {
 }
 
 console.log(`\n  Built ${written} pages (${PAGES.length} x ${langs.length}) -> dist/`);
-console.log(`  + sitemap.xml, robots.txt, ${STATIC_ASSETS.length} assets\n`);
+console.log(`  + sitemap.xml, robots.txt, ${STATIC_ASSETS.length} assets, ${fontCount} fonts\n`);
 
 // ---------------------------------------------------------------- dev server
 
