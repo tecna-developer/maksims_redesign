@@ -25,7 +25,7 @@
     "latitude": "59.4297",
     "longitude": "24.7536",
     "founded": "1993",
-    "opens": "09:00",
+    "opens": "08:00",
     "closes": "17:00",
 
     "_source": "regCode and vatNumber per the Estonian e-Business Register (ariregister.rik.ee/est/company/10038498), registered name Osaühing Maksims. Leaving either empty makes the footer, contact card and JSON-LD omit it.",
