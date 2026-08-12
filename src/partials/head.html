@@ -27,4 +27,10 @@
 <link rel="stylesheet" href="{{asset}}fonts.css" />
 <link rel="stylesheet" href="{{asset}}styles.css" />
 <script src="{{asset}}app.js" defer></script>
+<script>
+  window.si = window.si || function () {
+    (window.siq = window.siq || []).push(arguments);
+  };
+</script>
+<script src="/_vercel/speed-insights/script.js" defer></script>
 {{{jsonLd}}}

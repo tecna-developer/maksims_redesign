@@ -173,6 +173,9 @@ function checkReference(file, value, label) {
 
   if (target.origin !== 'https://local.test' && target.origin !== SITE_ORIGIN) return;
 
+  // Vercel provides platform routes only after deployment; they are not files in dist/.
+  if (target.pathname.startsWith('/_vercel/')) return;
+
   const targetRelative = fileForPublicPath(target.pathname);
   if (!targetRelative) {
     fail(file, `broken ${label}: ${value}`);
