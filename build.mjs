@@ -33,6 +33,10 @@ const PAGES = [
   { id: 'uudised', file: 'uudised.html', priority: '0.4' },
   { id: 'kontakt', file: 'kontakt.html', priority: '0.9' },
   { id: 'privaatsus', file: 'privaatsus.html', priority: '0.2' },
+  // Vercel serves the root 404.html automatically for unknown routes. Localised
+  // copies remain directly accessible through the language switcher, but error
+  // pages must never be advertised in the sitemap.
+  { id: 'not_found', file: '404.html', priority: '0.0', sitemap: false },
 ];
 
 const STATIC_ASSETS = [
@@ -169,6 +173,11 @@ function hreflang(file) {
 }
 
 function jsonLd(lang, pageId, dict) {
+  // Error pages describe a missing URL, not the organisation. Reusing the
+  // page's 404 description in AccountingService structured data would be
+  // misleading, so no JSON-LD is emitted here.
+  if (pageId === 'not_found') return '';
+
   const org = {
     '@context': 'https://schema.org',
     '@type': 'AccountingService',
@@ -410,7 +419,7 @@ if (fs.existsSync(fontSrc)) {
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${PAGES.flatMap(p => langs.map(lang => `  <url>
+${PAGES.filter(p => p.sitemap !== false).flatMap(p => langs.map(lang => `  <url>
     <loc>${siteUrl}${urlFor(lang, p.file)}</loc>
 ${langs.map(l => `    <xhtml:link rel="alternate" hreflang="${l}" href="${siteUrl}${urlFor(l, p.file)}"/>`).join('\n')}
     <xhtml:link rel="alternate" hreflang="x-default" href="${siteUrl}${urlFor(defaultLang, p.file)}"/>
@@ -484,7 +493,13 @@ if (process.argv.includes('--serve')) {
     }
 
     const file = resolve(urlPath);
-    if (!file) { res.writeHead(404, { 'Content-Type': 'text/plain' }).end('404'); return; }
+    if (!file) {
+      const lang = urlPath.startsWith('/ru/') ? 'ru' : urlPath.startsWith('/en/') ? 'en' : '';
+      const notFound = path.join(OUT, lang, '404.html');
+      res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+      fs.createReadStream(notFound).pipe(res);
+      return;
+    }
 
     res.writeHead(200, { 'Content-Type': TYPES[path.extname(file)] || 'application/octet-stream' });
     fs.createReadStream(file).pipe(res);

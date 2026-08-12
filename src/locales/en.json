@@ -267,6 +267,15 @@
       "form_section_company": "About the company",
       "form_section_company_note": "Three answers let us give you a price range. We will clarify the rest on a call."
     },
+    "not_found": {
+      "page_eyebrow": "Error 404",
+      "page_title": "Page not found",
+      "page_intro": "The page you are looking for does not exist or its address has changed. Return to the home page or contact us.",
+      "home_cta": "Back to home",
+      "contact_cta": "Contact us",
+      "meta_title": "Page not found — Maksims OÜ",
+      "meta_description": "The requested page could not be found."
+    },
     "privaatsus": {
       "meta_title": "Privacy policy — Maksims OÜ",
       "meta_description": "How Maksims OÜ processes personal data submitted through this website.",

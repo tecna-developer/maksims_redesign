@@ -433,6 +433,71 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   max-width: 60ch;
 }
 
+/* ---------- 404 ---------- */
+.not-found-section {
+  min-height: 58vh;
+  display: grid;
+  align-items: center;
+  padding: 64px 0 80px;
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.not-found-content {
+  position: relative;
+  text-align: center;
+}
+
+.not-found-code {
+  margin-bottom: -20px;
+  color: var(--surface-2);
+  font-family: var(--serif);
+  font-size: clamp(120px, 24vw, 260px);
+  font-weight: 600;
+  line-height: .72;
+  letter-spacing: -.07em;
+  user-select: none;
+}
+
+.not-found-content .eyebrow {
+  margin-bottom: 12px;
+}
+
+.not-found-content h1 {
+  font-size: clamp(36px, 6vw, 58px);
+  line-height: 1.05;
+}
+
+.not-found-content p {
+  max-width: 58ch;
+  margin: 18px auto 0;
+  color: var(--ink-muted);
+  font-size: 17px;
+}
+
+.not-found-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+@media (max-width:479px) {
+  .not-found-section {
+    min-height: 52vh;
+    padding: 52px 0 64px;
+  }
+
+  .not-found-code {
+    margin-bottom: -8px;
+  }
+
+  .not-found-actions {
+    flex-direction: column;
+  }
+}
+
 /* ---------- Hero (homepage) ---------- */
 .hero {
   position: relative;

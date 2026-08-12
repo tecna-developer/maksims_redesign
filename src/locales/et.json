@@ -267,6 +267,15 @@
       "form_section_company": "Ettevõttest",
       "form_section_company_note": "Kolm valikut, mille põhjal saame hinnavahemiku anda. Täpsustame ülejäänu vestluses."
     },
+    "not_found": {
+      "page_eyebrow": "Viga 404",
+      "page_title": "Lehte ei leitud",
+      "page_intro": "Otsitud lehte ei ole olemas või selle aadress on muutunud. Minge tagasi avalehele või võtke meiega ühendust.",
+      "home_cta": "Tagasi avalehele",
+      "contact_cta": "Võtke ühendust",
+      "meta_title": "Lehte ei leitud — Maksims OÜ",
+      "meta_description": "Otsitud lehte ei leitud."
+    },
     "privaatsus": {
       "meta_title": "Privaatsuspoliitika — Maksims OÜ",
       "meta_description": "Kuidas OÜ Maksims töötleb veebilehe kaudu saadetud isikuandmeid.",
