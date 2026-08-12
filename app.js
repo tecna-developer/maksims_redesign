@@ -93,6 +93,7 @@
   var progress = $('#formProgress');
   var backBtn = $('#formBack');
   var nextBtn = $('#formNext');
+  var caption = $('#formProgressCaption');
   var summary = $('#formSummary');
   var summaryList = $('#formSummaryList');
   var stepWord = form.getAttribute('data-step-word') || '';
@@ -163,6 +164,17 @@
         else li.removeAttribute('aria-current');
         li.setAttribute('data-done', String(i < current));
       });
+    }
+
+    if (caption) {
+      var name = $('legend', steps[current]);
+      caption.innerHTML = '';
+      caption.appendChild(doc.createTextNode(
+        stepWord + ' ' + (current + 1) + ' / ' + steps.length + ' — '));
+      var strong = doc.createElement('strong');
+      strong.textContent = name ? name.textContent.replace(/\s+/g, ' ').trim() : '';
+      caption.appendChild(strong);
+      caption.hidden = false;
     }
 
     var last = current === steps.length - 1;

@@ -37,10 +37,11 @@
           <!-- Hidden until JS actually splits the form into steps; without it the
                form stays a single page and the indicator would be a lie. -->
           <ol class="form-progress" id="formProgress" hidden>
-            <li data-step="1"><span class="form-progress-num">1</span><span>{{form_section_contact}}</span></li>
-            <li data-step="2"><span class="form-progress-num">2</span><span>{{form_section_company}}</span></li>
-            <li data-step="3"><span class="form-progress-num">3</span><span>{{form_step3}}</span></li>
+            <li data-step="1"><span class="form-progress-num">1</span><span class="sr-only">{{form_section_contact}}</span></li>
+            <li data-step="2"><span class="form-progress-num">2</span><span class="sr-only">{{form_section_company}}</span></li>
+            <li data-step="3"><span class="form-progress-num">3</span><span class="sr-only">{{form_step3}}</span></li>
           </ol>
+          <p class="form-progress-caption" id="formProgressCaption" hidden></p>
 
           <form class="quote-form" id="quoteForm" method="post" action="{{formAction}}"
             data-mode="{{formMode}}" data-email="{{company.email}}" data-subject="{{form_title}}"
