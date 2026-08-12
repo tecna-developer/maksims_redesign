@@ -1769,6 +1769,85 @@ section {
   }
 }
 
+/* ---------- Pill choices ----------
+   A real <input type="radio"> stays in the DOM for semantics, keyboard and form
+   submission; it is visually replaced by its <label>. Tokens rather than fixed
+   colours, so the checked state keeps its 15.6:1 in both themes. */
+.pills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.pill {
+  display: block;
+  position: relative;
+}
+
+/* Not display:none — that would drop it from the tab order and from
+   assistive tech. */
+.pill input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.pill label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  /* 46px tall — comfortably over the 44px touch-target minimum */
+  min-height: 46px;
+  padding: 12px 14px;
+  border: 1px solid rgba(245, 237, 214, .4);   /* 3.45:1 — граница элемента управления */
+  border-radius: var(--radius);
+  background: rgba(245, 237, 214, .06);
+  color: var(--on-ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease),
+    color var(--dur-1) var(--ease);
+}
+
+.pill input:hover + label {
+  border-color: rgba(245, 237, 214, .6);
+  background: rgba(245, 237, 214, .12);
+}
+
+.pill input:checked + label {
+  background: var(--on-ink);
+  border-color: var(--on-ink);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+
+.pill input:focus-visible + label {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pill label {
+    transition: none;
+  }
+}
+
+.legend-optional {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+  opacity: .75;
+}
+
 /* Radio groups are fieldsets too, but visually inline with other fields */
 .field-group {
   border: 0;
@@ -2019,18 +2098,59 @@ section {
 }
 
 .contact-map {
-  margin-top: 20px;
-  border: 1px solid var(--line);
+  position: relative;
+  display: block;
+  margin-top: 18px;
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius);
   overflow: hidden;
-  background: var(--surface);
+  background: var(--surface-2);
+  text-decoration: none;
+  line-height: 0;
 }
 
-.contact-map iframe {
-  display: block;
+.contact-map img {
   width: 100%;
-  height: 280px;
-  border: 0;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  transition: transform var(--dur-2) var(--ease);
+}
+
+.contact-map:hover img {
+  transform: scale(1.03);
+}
+
+.contact-map-cta {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: var(--on-ink);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.contact-map:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-map img {
+    transition: none;
+  }
+
+  .contact-map:hover img {
+    transform: none;
+  }
 }
 
 .contact-requisites {

@@ -61,21 +61,6 @@
     }
   }
 
-  /* --------------------------------------------------------- click-to-map --- */
-
-  var mapLoad = $('#mapLoad');
-  var mapHolder = $('#mapHolder');
-  if (mapLoad && mapHolder) {
-    mapLoad.addEventListener('click', function () {
-      var frame = $('iframe', mapHolder);
-      if (frame && !frame.src) frame.src = frame.getAttribute('data-src');
-      mapHolder.hidden = false;
-      mapLoad.parentNode.removeChild(mapLoad);
-    });
-  } else if (mapLoad) {
-    mapLoad.parentNode.removeChild(mapLoad);
-  }
-
   /* ---------------------------------------------------------------- form --- */
 
   var form = $('#quoteForm');
@@ -185,12 +170,16 @@
       var value = data.get(field.name);
       if (value) lines.push(label.textContent.replace(/\s*\*\s*$/, '').trim() + ': ' + value);
     });
-    ['legal_form', 'stock_accounting', 'fixed_assets', 'company_status', 'access_24h'].forEach(function (name) {
+    ['legal_form', 'documents', 'staff_count'].forEach(function (name) {
       var group = form.querySelector('[name="' + name + '"]');
       var legend = group && group.closest('fieldset') && $('legend', group.closest('fieldset'));
       if (legend && data.get(name)) lines.push(legend.textContent.trim() + ': ' + data.get(name));
     });
-    var subject = (data.get('company_name') || '') + ' — ' + (form.getAttribute('data-subject') || 'Hinnapäring');
+    if (form.vat_registered && form.vat_registered.checked) {
+      var vatLabel = $('label[for="f-vat"] span', form);
+      lines.push((vatLabel ? vatLabel.textContent.trim() : 'KMKR') + ': yes');
+    }
+    var subject = (data.get('name') || '') + ' — ' + (form.getAttribute('data-subject') || 'Hinnapäring');
     window.location.href = 'mailto:' + form.getAttribute('data-email') +
       '?subject=' + encodeURIComponent(subject) +
       '&body=' + encodeURIComponent(lines.join('\n'));

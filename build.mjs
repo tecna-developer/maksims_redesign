@@ -39,6 +39,9 @@ const STATIC_ASSETS = [
   'styles.css', 'fonts.css', 'app.js',
   'logo-maksims-burgundy.svg', 'logo-maksims-light.svg',
   'favicon.svg',
+  // Static map rendered from OpenStreetMap tiles; self-hosted so the contact
+  // page contacts no third party. See README.
+  'map-kentmanni.jpg',
 ];
 
 // Self-hosted woff2 (see fonts.css). Copied wholesale.

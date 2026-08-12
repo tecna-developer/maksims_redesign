@@ -27,27 +27,23 @@
           <div class="contact-card">
             <h3>{{card_address_head}}</h3>
             <p>{{company.street}},<br>{{company.postalCode}} {{addr_city}},<br>{{addr_country}}</p>
-            <a class="map-link"
-              href="https://www.google.com/maps/search/?api=1&amp;query=Kentmanni+18-45%2C+10116+Tallinn%2C+Estonia"
+            <!-- Static image rendered from OpenStreetMap tiles and served from this
+                 origin, so viewing the page contacts nobody. Attribution is baked
+                 into the image as the licence requires. Opens the full interactive
+                 map only if the visitor chooses to. -->
+            <a class="contact-map" href="https://www.openstreetmap.org/?mlat={{company.latitude}}&amp;mlon={{company.longitude}}#map=18/{{company.latitude}}/{{company.longitude}}"
               target="_blank" rel="noopener">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:inline;">
-                <path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0 1 18 0z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              {{card_map_link}}
+              <img src="{{asset}}map-kentmanni.jpg" width="720" height="480" loading="lazy" decoding="async"
+                alt="{{map_alt}}" />
+              <span class="contact-map-cta">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                {{card_map_link}}
+              </span>
             </a>
-            <!-- Click-to-load: no request reaches Google until the visitor asks for it,
-                 which is what the privacy policy promises. -->
-            <div class="contact-map" id="mapHolder" hidden>
-              <iframe title="{{map_title}}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                data-src="https://www.google.com/maps?q=Kentmanni+18-45,+10116+Tallinn,+Estonia&amp;output=embed"></iframe>
-            </div>
-            <p style="margin-top:12px;">
-              <button type="button" class="btn btn-ghost" id="mapLoad" style="font-size:13.5px;padding:9px 16px;min-height:38px;">
-                {{map_title}}
-              </button>
-            </p>
           </div>
 
           <div class="contact-card">
@@ -101,19 +97,11 @@
             <fieldset class="form-section">
               <legend>{{form_section_contact}}</legend>
 
-              <div class="form-row form-row--2">
-                <div class="field">
-                  <label for="f-contact">{{f_contact}} <span class="req" aria-hidden="true">*</span></label>
-                  <input type="text" id="f-contact" name="contact_person" autocomplete="name" required
-                    aria-describedby="e-contact" />
-                  <p class="field-error" id="e-contact"></p>
-                </div>
-                <div class="field">
-                  <label for="f-company">{{f_company}} <span class="req" aria-hidden="true">*</span></label>
-                  <input type="text" id="f-company" name="company_name" autocomplete="organization" required
-                    aria-describedby="e-company" />
-                  <p class="field-error" id="e-company"></p>
-                </div>
+              <div class="field">
+                <label for="f-name">{{f_name}} <span class="req" aria-hidden="true">*</span></label>
+                <input type="text" id="f-name" name="name" autocomplete="organization" required
+                  aria-describedby="e-name" />
+                <p class="field-error" id="e-name"></p>
               </div>
 
               <div class="form-row form-row--2">
@@ -131,91 +119,49 @@
             </fieldset>
 
             <fieldset class="form-section">
-              <legend>{{form_section_volume}} <span style="text-transform:none;letter-spacing:0;font-weight:400;opacity:.75;">— {{form_optional}}</span></legend>
-              <p class="form-section-note">{{form_section_volume_note}}</p>
+              <legend>{{form_section_company}} <span class="legend-optional">— {{form_optional}}</span></legend>
+              <p class="form-section-note">{{form_section_company_note}}</p>
 
               <fieldset class="field-group">
                 <legend>{{f_legal_form}}</legend>
-                <div class="field-radio-group">
-                  <label class="field-radio"><input type="radio" name="legal_form" value="AS" /> AS</label>
-                  <label class="field-radio"><input type="radio" name="legal_form" value="OÜ" checked /> OÜ</label>
-                  <label class="field-radio"><input type="radio" name="legal_form" value="KÜ" /> KÜ</label>
-                  <label class="field-radio"><input type="radio" name="legal_form" value="Muu" /> {{f_other}}</label>
+                <div class="pills">
+                  <span class="pill"><input type="radio" id="lf-as" name="legal_form" value="AS" /><label for="lf-as">AS</label></span>
+                  <span class="pill"><input type="radio" id="lf-ou" name="legal_form" value="OÜ" /><label for="lf-ou">OÜ</label></span>
+                  <span class="pill"><input type="radio" id="lf-ku" name="legal_form" value="KÜ" /><label for="lf-ku">KÜ</label></span>
+                  <span class="pill"><input type="radio" id="lf-muu" name="legal_form" value="Muu" /><label for="lf-muu">{{f_other}}</label></span>
+                </div>
+              </fieldset>
+
+              <fieldset class="field-group">
+                <legend>{{f_docs}}</legend>
+                <div class="pills">
+                  <span class="pill"><input type="radio" id="doc-1" name="documents" value="kuni-20" /><label for="doc-1">{{f_docs_1}}</label></span>
+                  <span class="pill"><input type="radio" id="doc-2" name="documents" value="21-50" /><label for="doc-2">{{f_docs_2}}</label></span>
+                  <span class="pill"><input type="radio" id="doc-3" name="documents" value="51-100" /><label for="doc-3">{{f_docs_3}}</label></span>
+                  <span class="pill"><input type="radio" id="doc-4" name="documents" value="100+" /><label for="doc-4">{{f_docs_4}}</label></span>
+                </div>
+              </fieldset>
+
+              <fieldset class="field-group">
+                <legend>{{f_staff}}</legend>
+                <div class="pills">
+                  <span class="pill"><input type="radio" id="st-1" name="staff_count" value="0" /><label for="st-1">{{f_staff_1}}</label></span>
+                  <span class="pill"><input type="radio" id="st-2" name="staff_count" value="1-3" /><label for="st-2">{{f_staff_2}}</label></span>
+                  <span class="pill"><input type="radio" id="st-3" name="staff_count" value="4-10" /><label for="st-3">{{f_staff_3}}</label></span>
+                  <span class="pill"><input type="radio" id="st-4" name="staff_count" value="10+" /><label for="st-4">{{f_staff_4}}</label></span>
                 </div>
               </fieldset>
 
               <div class="field">
-                <label for="f-activity">{{f_activity}}</label>
-                <input type="text" id="f-activity" name="main_activity" />
+                <label class="field-consent" for="f-vat">
+                  <input type="checkbox" id="f-vat" name="vat_registered" value="yes" />
+                  <span>{{f_vat}}</span>
+                </label>
               </div>
-
-              <div class="form-row form-row--3">
-                <div class="field">
-                  <label for="f-sales">{{f_sales}}</label>
-                  <input type="number" min="0" step="1" inputmode="numeric" id="f-sales" name="sales_invoices" />
-                </div>
-                <div class="field">
-                  <label for="f-cash">{{f_cash}}</label>
-                  <input type="number" min="0" step="1" inputmode="numeric" id="f-cash" name="cash_invoices" />
-                </div>
-                <div class="field">
-                  <label for="f-purchase">{{f_purchase}}</label>
-                  <input type="number" min="0" step="1" inputmode="numeric" id="f-purchase" name="purchase_invoices" />
-                </div>
-              </div>
-
-              <div class="form-row form-row--3">
-                <div class="field">
-                  <label for="f-receipts">{{f_receipts}}</label>
-                  <input type="number" min="0" step="1" inputmode="numeric" id="f-receipts" name="purchase_receipts" />
-                </div>
-                <div class="field">
-                  <label for="f-staff">{{f_staff}}</label>
-                  <input type="number" min="0" step="1" inputmode="numeric" id="f-staff" name="staff_count" />
-                </div>
-                <div class="field">
-                  <label for="f-startdate">{{f_startdate}}</label>
-                  <input type="date" id="f-startdate" name="start_date" data-min="today" />
-                </div>
-              </div>
-
-              <div class="form-row form-row--2">
-                <fieldset class="field-group">
-                  <legend>{{f_stock}}</legend>
-                  <div class="field-radio-group">
-                    <label class="field-radio"><input type="radio" name="stock_accounting" value="yes" /> {{f_yes}}</label>
-                    <label class="field-radio"><input type="radio" name="stock_accounting" value="no" checked /> {{f_no}}</label>
-                  </div>
-                </fieldset>
-                <fieldset class="field-group">
-                  <legend>{{f_fixed_assets}}</legend>
-                  <div class="field-radio-group">
-                    <label class="field-radio"><input type="radio" name="fixed_assets" value="yes" /> {{f_yes}}</label>
-                    <label class="field-radio"><input type="radio" name="fixed_assets" value="no" checked /> {{f_no}}</label>
-                  </div>
-                </fieldset>
-              </div>
-
-              <fieldset class="field-group">
-                <legend>{{f_status}}</legend>
-                <div class="field-radio-group">
-                  <label class="field-radio"><input type="radio" name="company_status" value="starting" checked /> {{f_status_starting}}</label>
-                  <label class="field-radio"><input type="radio" name="company_status" value="operating" /> {{f_status_operating}}</label>
-                  <label class="field-radio"><input type="radio" name="company_status" value="inactive" /> {{f_status_inactive}}</label>
-                </div>
-              </fieldset>
-
-              <fieldset class="field-group">
-                <legend>{{f_access}}</legend>
-                <div class="field-radio-group">
-                  <label class="field-radio"><input type="radio" name="access_24h" value="yes" /> {{f_yes}}</label>
-                  <label class="field-radio"><input type="radio" name="access_24h" value="no" checked /> {{f_no}}</label>
-                </div>
-              </fieldset>
 
               <div class="field">
                 <label for="f-extra">{{f_extra}}</label>
-                <textarea id="f-extra" name="additional_info" rows="4"></textarea>
+                <textarea id="f-extra" name="additional_info" rows="3"></textarea>
               </div>
             </fieldset>
 
