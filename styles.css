@@ -11,6 +11,7 @@
   --accent-ink: #14141F;
   --brass: #A9824F;
   --seal: #7A2A2A;
+  --logo: #A10529;
   --line: #E4DFD0;
   --line-strong: #D6CBAE;
   /* form controls only — needs 3:1 as a UI boundary, unlike decorative --line-strong */
@@ -32,6 +33,7 @@
   --dur-1: 150ms;
   --dur-2: 260ms;
   --ease: cubic-bezier(.22, .61, .36, 1);
+  --bg-hover: #7F041F;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -707,9 +709,17 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 }
 
 .btn-primary {
-  background: var(--ink);
+  background: var(--logo);
   color: var(--bg);
-  border-color: var(--ink);
+  border-color: var(--logo);
+}
+
+@media (prefers-color-scheme:dark) {
+  .btn-primary {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
 }
 
 .btn-primary:hover {
@@ -1869,7 +1879,8 @@ section {
   /* 46px tall — comfortably over the 44px touch-target minimum */
   min-height: 46px;
   padding: 12px 14px;
-  border: 1px solid rgba(245, 237, 214, .4);   /* 3.45:1 — граница элемента управления */
+  border: 1px solid rgba(245, 237, 214, .4);
+  /* 3.45:1 — граница элемента управления */
   border-radius: var(--radius);
   background: rgba(245, 237, 214, .06);
   color: var(--on-ink);
@@ -1883,19 +1894,19 @@ section {
     color var(--dur-1) var(--ease);
 }
 
-.pill input:hover + label {
+.pill input:hover+label {
   border-color: rgba(245, 237, 214, .6);
   background: rgba(245, 237, 214, .12);
 }
 
-.pill input:checked + label {
+.pill input:checked+label {
   background: var(--on-ink);
   border-color: var(--on-ink);
   color: var(--accent-ink);
   font-weight: 600;
 }
 
-.pill input:focus-visible + label {
+.pill input:focus-visible+label {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
