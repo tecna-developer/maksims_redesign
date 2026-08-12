@@ -1,0 +1,17 @@
+{
+  "name": "maksims-redesign",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs --serve",
+    "check:html": "node scripts/check-site.mjs html",
+    "check:links": "node scripts/check-site.mjs links",
+    "check": "npm run build && npm run check:html && npm run check:links",
+    "test": "npm run check"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
