@@ -724,7 +724,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
   margin-top: 24px;
   border-top: 1px solid var(--line);
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: .04em;
   text-transform: uppercase;
   color: var(--ink-muted);
@@ -1809,7 +1809,6 @@ section {
 .form-section-note {
   font-size: 13.5px;
   color: var(--ink-muted);
-  margin-top: -12px;
 }
 
 .legend-optional {

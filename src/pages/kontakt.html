@@ -184,7 +184,7 @@
         <div>
           <div class="contact-card">
             <h3>{{card_address_head}}</h3>
-            <p>{{company.street}},{{company.postalCode}} {{addr_city}},{{addr_country}}</p>
+            <p>{{company.street}}, {{company.postalCode}} {{addr_city}}, {{addr_country}}</p>
             <!-- Static image rendered from OpenStreetMap tiles and served from this
                  origin, so viewing the page contacts nobody. Attribution is baked
                  into the image as the licence requires. Opens the full interactive
@@ -209,8 +209,12 @@
             <h3>{{card_phone_head}}</h3>
             <p><a href="tel:{{company.phoneHref}}">{{company.phone}}</a></p>
             <p><a href="tel:{{company.mobileHref}}">{{company.mobile}}</a><br><span>{{card_viber_note}}</span></p>
-            <!-- <p><a href="mailto:{{company.email}}">{{company.email}}</a></p>
-            <p class="contact-note">{{response_time}}</p> -->
+          </div>
+
+          <div class="contact-card">
+            <h3>{{card_email_head}}</h3>
+            <p><a href="mailto:{{company.email}}">{{company.email}}</a></p>
+            <p class="contact-note">{{response_time}}</p>
           </div>
 
           <div class="contact-card">
